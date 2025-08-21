@@ -17,20 +17,20 @@
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sap/opu/odata4/sap/zcredit_debit_note_bind/srvd/sap/zcredit_debit_note_form_srv/0001/",
+        "uri": "/sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/mainService/metadata.xml",
+          "localUri": "localService/zui_debit_note_o4/metadata.xml",
           "odataVersion": "4.0"
         }
       },
       "docService": {
-        "uri": "/sap/opu/odata4/sap/zdoc_ref_bind/srvd/sap/zref_doc_srv/0001/",
+        "uri": "/sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/zref_doc_srv/metadata.xml",
+          "localUri": "localService/zdebit_search_service/metadata.xml",
           "odataVersion": "4.0"
         }
       }
@@ -41,6 +41,15 @@
           "semanticObject": "ZDEBITNOTEFORM",
           "action": "Display",
           "title": "{{ZDEBITNOTEFORM-Display.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        },
+        "ZDEBITNOTEFORM2-Display": {
+          "semanticObject": "ZDEBITNOTEFORM2",
+          "action": "Display",
+          "title": "{{ZDEBITNOTEFORM2-Display.flpTitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"

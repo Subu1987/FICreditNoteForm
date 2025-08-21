@@ -9,21 +9,25 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: false
         ui5:
           path:
             - /resources
             - /test-resources
           url: https://ui5.sap.com
         backend:
-          - authenticationType: reentranceTicket # SAML support for vscode
+          - authenticationType: reentranceTicket
             path: /sap
             url: https://my418443.s4hana.cloud.sap
             destination: BAS_Crescent_Dev
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zdoc_ref_bind/srvd/sap/zref_doc_srv/0001/
+            path: /sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001/
+          - url: https://my418443-api.s4hana.cloud.sap
+            authenticationType: SAMLAssertion
+            destination: BAS_Crescent_Dev
+            path: /sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001/
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:

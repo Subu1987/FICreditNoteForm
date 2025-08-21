@@ -28,27 +28,31 @@ server:
     - name: fiori-tools-proxy
       afterMiddleware: compression
       configuration:
-        ignoreCertError: false # If set to true, certificate errors will be ignored. E.g. self-signed certificates will be accepted
+        ignoreCertError: false
         backend:
-          - authenticationType: reentranceTicket # SAML support for vscode
+          - authenticationType: reentranceTicket
             path: /sap
             url: https://my418443.s4hana.cloud.sap
             destination: BAS_Crescent_Dev
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zdoc_ref_bind/srvd/sap/zref_doc_srv/0001/
+            path: /sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001/
+          - url: https://my418443-api.s4hana.cloud.sap
+            authenticationType: SAMLAssertion
+            destination: BAS_Crescent_Dev
+            path: /sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001/
     - name: sap-fe-mockserver
       beforeMiddleware: csp
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata4/sap/zcredit_debit_note_bind/srvd/sap/zcredit_debit_note_form_srv/0001
-            metadataPath: ./webapp/localService/mainService/metadata.xml
-            mockdataPath: ./webapp/localService/mainService/data
+          - urlPath: /sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001
+            metadataPath: ./webapp/localService/zui_debit_note_o4/metadata.xml
+            mockdataPath: ./webapp/localService/zui_debit_note_o4/data
             generateMockData: true
-          - urlPath: /sap/opu/odata4/sap/zdoc_ref_bind/srvd/sap/zref_doc_srv/0001
-            metadataPath: ./webapp/localService/zref_doc_srv/metadata.xml
-            mockdataPath: ./webapp/localService/zref_doc_srv/data
+          - urlPath: /sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001
+            metadataPath: ./webapp/localService/zdebit_search_service/metadata.xml
+            mockdataPath: ./webapp/localService/zdebit_search_service/data
             generateMockData: true
         annotations: []

@@ -371,8 +371,8 @@ sap.ui.define([
                 return;
             }
 
-            const sEntityPath = "/creditSet";
-            const sDocumentNoFilter = aDocumentNos.map(sDocNo => `Document eq '${sDocNo}'`).join(" or ");
+            const sEntityPath = "/debitSet";
+            const sDocumentNoFilter = aDocumentNos.map(sDocNo => `Document_No eq '${sDocNo}'`).join(" or ");
             const sFilter = `CompanyCode eq '1000' and FiscalYear eq '${sFiscalYear}' and (${sDocumentNoFilter})`;
             const sUrlParameters = {
                 "$count": "true",
@@ -415,7 +415,7 @@ sap.ui.define([
                     }
 
                     oDebitNoteDataModel.setData({ value: aAllData });
-                    console.log("Fetched creditSet data:", aAllData);
+                    console.log("Fetched debitSet data:", aAllData);
 
                     return this._loadImageAsBase64("com/crescent/app/debitnoteform/images/Crescent_logo_new.png")
                         .catch(error => {
@@ -516,33 +516,33 @@ sap.ui.define([
             // ✅ Get the first non-empty record
             const firstRecord = this._findFirstValidRecord(data.value) || {};
 
-            const borderLayout = { 
-                hLineWidth: () => 0.5, 
-                vLineWidth: () => 0.5, 
-                hLineColor: () => '#000000', 
-                vLineColor: () => '#000000', 
-                paddingLeft: () => 4, 
-                paddingRight: () => 4, 
-                paddingTop: () => 4, 
-                paddingBottom: () => 4 
+            const borderLayout = {
+                hLineWidth: () => 0.5,
+                vLineWidth: () => 0.5,
+                hLineColor: () => '#000000',
+                vLineColor: () => '#000000',
+                paddingLeft: () => 4,
+                paddingRight: () => 4,
+                paddingTop: () => 4,
+                paddingBottom: () => 4
             };
-            const headerLayout = { 
-                hLineWidth: () => 0.5, 
-                vLineWidth: () => 0.5, 
-                hLineColor: () => '#000000', 
-                vLineColor: () => '#000000', 
-                paddingLeft: () => 10, 
-                paddingRight: () => 10, 
-                paddingTop: () => 10, 
-                paddingBottom: () => 10 
+            const headerLayout = {
+                hLineWidth: () => 0.5,
+                vLineWidth: () => 0.5,
+                hLineColor: () => '#000000',
+                vLineColor: () => '#000000',
+                paddingLeft: () => 12,
+                paddingRight: () => 12,
+                paddingTop: () => 12,
+                paddingBottom: () => 12
             };
-            const noBordersNoPadding = { 
-                hLineWidth: () => 0, 
-                vLineWidth: () => 0, 
-                paddingLeft: () => 0, 
-                paddingRight: () => 0, 
-                paddingTop: () => 0, 
-                paddingBottom: () => 0 
+            const noBordersNoPadding = {
+                hLineWidth: () => 0,
+                vLineWidth: () => 0,
+                paddingLeft: () => 0,
+                paddingRight: () => 0,
+                paddingTop: () => 0,
+                paddingBottom: () => 0
             };
 
             const items = data.value.map(item => ({
@@ -568,17 +568,17 @@ sap.ui.define([
             const totalIgst = items.reduce((sum, item) => sum + (parseFloat(item.igstAmt) || 0), 0).toFixed(2);
             const grandTotal = (parseFloat(totalPrice) + parseFloat(totalCgst) + parseFloat(totalSgst) + parseFloat(totalIgst)).toFixed(2);
 
-            const itemsPerPage = 20;
+            const itemsPerPage = 18;
             const tableBody = [
                 [{ colSpan: 14, stack: [{ table: { widths: ['*'], body: [[{ text: 'DEBIT NOTE', style: 'header', alignment: 'center', border: [false, false, false, false] }]] } }], border: [true, true, true, true], layout: headerLayout }, ...Array(13).fill({})],
                 [{
                     colSpan: 14,
                     table: {
-                        widths: ['12%', '38%', '12%', '38%'], // Added blank column (4%)
-                        heights: [50, 50], // Fixed height for company/contact and bill-to/ship-to rows
+                        widths: ['12%', '38%', '12%', '38%'],
+                        heights: [50, 50],
                         body: [
                             [
-                                { 
+                                {
                                     stack: [
                                         base64Image
                                             ? { image: base64Image, width: 50, alignment: 'center', margin: [0, 0, 0, 0] }
@@ -586,95 +586,97 @@ sap.ui.define([
                                     ],
                                     border: [true, true, true, false]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: 'CRESCENT FOUNDRY CO PVT. LTD.', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Plant_Adress_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Plant_Adress_Line2 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Plant_Adress_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `GSTNO: ${firstRecord.gstn_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN NO: ${firstRecord.Pan_no || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `STATE CODE: ${firstRecord.State_Code || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
+                                        { text: firstRecord.Plant_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Plant_Address_Line2 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: 'CIN NO: U29100WB1982PTCO35426', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `GSTNO: ${firstRecord.GSTN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN NO: ${firstRecord.PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `STATE CODE: ${firstRecord.Plant_State_Code || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
                                     ],
                                     border: [true, true, true, false]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: `Tel: 03322826819`, style: 'tableBody', alignment: 'left', margin: [2, 2, 2, 0] },
                                         { text: `Fax: (033)2282-1886/3952`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `Website: admin@crescentfoundry.in`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: '4th FLOOR, SUIT NO 406, LORDS BUILDING, 7/1 LORD SINHA ROAD', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: 'Kolkata 700071, WB', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `Document No: ${firstRecord.Document_no || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 6, 2, 0] },
-                                        { text: `Document Date: ${this._formatDate(firstRecord.Document_date) || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
-                                        { text: `Ref. No: ${firstRecord.Ref_no || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
-                                        { text: `Ref. Date: ${this._formatDate(firstRecord.Ref_date) || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] }
+                                        { text: `Document No: ${firstRecord.Document_No || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 15, 2, 0] },
+                                        { text: `Document Date: ${this._formatDate(firstRecord.Document_Date) || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
+                                        { text: `Ref. No: ${firstRecord.ref_doc || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
+                                        { text: `Ref. Date: ${this._formatDate(firstRecord.ref_date) || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
                                 }
                             ],
-
-                            // 2nd stack
                             [
-                                { 
+                                {
                                     stack: [
                                         { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
                                     ],
                                     border: [true, false, true, true]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: 'Bill To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Vendor_name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Adress_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line2 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `GST No: ${firstRecord.Vendor_Gst_no || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN No: ${firstRecord.Vendor_Pan_no || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `Place of Supply: ${firstRecord.Place_of_supply_city || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
+                                        { text: firstRecord.Vendor_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `GST No: ${firstRecord.Vendor_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN No: ${firstRecord.Vendor_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
                                     ],
                                     border: [true, false, true, true]
                                 },
-                                { 
+                                {
                                     stack: [
                                         { text: 'Ship To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Vendor_name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Ship_to_party || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `GST No: ${firstRecord.Vendor_Gst_no || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN No: ${firstRecord.Vendor_Pan_no || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
+                                        { text: firstRecord.Vendor_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Vendor_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `GST No: ${firstRecord.Vendor_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN No: ${firstRecord.Vendor_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
                                 }
                             ]
                         ]
                     },
-                    layout: headerLayout // Use standard layout with no padding
+                    layout: headerLayout
                 }, ...Array(13).fill({})],
                 [
                     { text: 'Material Code', style: 'tableHeader', alignment: 'left' },
-                    { text: 'Material Description', style: 'tableHeader', alignment: 'left' },
-                    { text: 'HSN', style: 'tableHeader' },
-                    { text: 'Qty', style: 'tableHeader' },
+                    { text: 'Description', style: 'tableHeader', alignment: 'left' },
+                    { text: 'HSN/SAC', style: 'tableHeader' },
+                    { text: 'Quantity', style: 'tableHeader' },
                     { text: 'UOM', style: 'tableHeader' },
+                    { text: 'Currency', style: 'tableHeader' },
                     { text: 'Unit Price', style: 'tableHeader' },
                     { text: 'Total Price', style: 'tableHeader' },
-                    { text: 'Currency', style: 'tableHeader' },
-                    { text: 'CGST %', style: 'tableHeader' },
+                    { text: 'CGST Rate', style: 'tableHeader' },
                     { text: 'CGST Amt', style: 'tableHeader' },
-                    { text: 'SGST %', style: 'tableHeader' },
+                    { text: 'SGST Rate', style: 'tableHeader' },
                     { text: 'SGST Amt', style: 'tableHeader' },
-                    { text: 'IGST %', style: 'tableHeader' },
+                    { text: 'IGST Rate', style: 'tableHeader' },
                     { text: 'IGST Amt', style: 'tableHeader' }
                 ]
             ];
@@ -689,9 +691,9 @@ sap.ui.define([
                         { text: item.hsn, style: 'tableBody' },
                         { text: item.quantity, style: 'tableBody' },
                         { text: item.uom, style: 'tableBody' },
+                        { text: item.currency, style: 'tableBody' },
                         { text: item.unitPrice, style: 'tableBody' },
                         { text: item.totalPrice, style: 'tableBody' },
-                        { text: item.currency, style: 'tableBody' },
                         { text: item.cgstRate, style: 'tableBody' },
                         { text: item.cgstAmt, style: 'tableBody' },
                         { text: item.sgstRate, style: 'tableBody' },
@@ -711,12 +713,12 @@ sap.ui.define([
 
             tableBody.push(
                 [
-                    { colSpan: 4, text: `Reason of Debit Note: ${firstRecord.Reason_of_Debit_Note || ' '}`, style: 'subHeader', alignment: 'left' },
+                    { colSpan: 4, text: `Reason of Debit Note: ${firstRecord.Note_In_Header || ' '}`, style: 'subHeader', alignment: 'left' },
                     {}, {}, {},
-                    { text: 'Total', style: 'subHeader', alignment: 'center' },
+                    { colSpan: 2, text: 'Total', style: 'subHeader', alignment: 'left' },
+                    {},
                     {},
                     { text: totalPrice, style: 'subHeader', alignment: 'center' },
-                    {},
                     {},
                     { text: totalCgst, style: 'subHeader', alignment: 'center' },
                     {},
@@ -725,12 +727,16 @@ sap.ui.define([
                     { text: totalIgst, style: 'subHeader', alignment: 'center' }
                 ],
                 [
-                    { colSpan: 4, text: `Note in Header: ${firstRecord.Note_in_Header || ' '}`, style: 'subHeader', alignment: 'left' },
+                    { colSpan: 4, text: '', style: 'tableBody' },
                     {}, {}, {},
-                    { colSpan: 2, text: 'Grand Total', style: 'subHeader', alignment: 'center' },
-                    {},
-                    { colSpan: 8, text: grandTotal, style: 'subHeader' },
+                    { colSpan: 2, text: 'Grand Total', style: 'subHeader', alignment: 'left' },
+                    {},  // Added missing placeholder
+                    { colSpan: 8, text: grandTotal, style: 'subHeader', alignment: 'right' },
                     {}, {}, {}, {}, {}, {}, {}
+                ],
+                [
+                    { colSpan: 14, text: 'RCM APPLICABLE - YES/NO', style: 'subHeader', alignment: 'left' },
+                    {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}
                 ],
                 [
                     { colSpan: 14, text: `Amount in Words: ${this._numberToWords(grandTotal)}`, style: 'subHeader', alignment: 'left' },
@@ -743,7 +749,7 @@ sap.ui.define([
                 pageMargins: [20, 20, 20, 70],
                 content: [{
                     table: {
-                        widths: ['12%', '15%', '7%', '6%', '6%', '7%', '10%', '5%', '5%', '7%', '5%', '7%', '5%', '5%'],
+                        widths: ['10%', '12%', '8%', '7%', '4%', '5%', '5%', '9%', '5%', '9%', '5%', '9%', '5%', '9%'],
                         headerRows: 3,
                         body: tableBody
                     },
@@ -752,7 +758,7 @@ sap.ui.define([
                 footer: (currentPage, pageCount) => ({
                     stack: [
                         { columns: [{ text: 'Authorised Signatory', style: 'subHeader', alignment: 'right' }], margin: [20, 0, 30, 4] },
-                        { text: firstRecord.HeaderPartner || 'CRESCENT FOUNDRY CO PVT. LTD', style: 'subHeader', alignment: 'right', margin: [20, 0, 30, 4] },
+                        { text: 'CRESCENT FOUNDRY CO PVT. LTD', style: 'subHeader', alignment: 'right', margin: [20, 0, 30, 4] },
                         { columns: [{ text: 'SAP generated document', style: 'footerText', alignment: 'center' }], margin: [30, 0, 20, 4] }
                     ]
                 }),

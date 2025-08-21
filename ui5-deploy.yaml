@@ -18,9 +18,9 @@ builder:
           url: https://my418443.s4hana.cloud.sap
           authenticationType: reentranceTicket # SAML support for vscode
         app:
-          name: ZDEBIT_NOTE_FRM
+          name: ZDEBIT_NTE_FRM2
           description: Debit Note Form
-          package: ZDEBIT_NOTE_FORM
-          transport: NRTK902960
+          package: ZCFC_DEBIT_NOTE_FORM
+          transport: NRTK903594
         exclude:
           - /test/
