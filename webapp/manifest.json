@@ -1,7 +1,7 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "com.crescent.app.debitnoteform",
+    "id": "com.crescent.app.debitnoteform2",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -16,21 +16,21 @@
       "toolsId": "81cc65aa-8f34-4f76-b8a7-049001da9115"
     },
     "dataSources": {
-      "mainService": {
-        "uri": "/sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001/",
+      "docService": {
+        "uri": "/sap/opu/odata4/sap/zcrdt_dbt_bind/srvd/sap/zdebit_note_search_help_srv/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/zui_debit_note_o4/metadata.xml",
+          "localUri": "localService/zdebit_note_search_help_srv/metadata.xml",
           "odataVersion": "4.0"
         }
       },
-      "docService": {
-        "uri": "/sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001/",
+      "mainService": {
+        "uri": "/sap/opu/odata4/sap/zcrd_dbt_note_bind/srvd/sap/zdebit_note_srv/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/zdebit_search_service/metadata.xml",
+          "localUri": "localService/zdebit_note_srv/metadata.xml",
           "odataVersion": "4.0"
         }
       }
@@ -103,8 +103,8 @@
       "documentNoData": {
         "type": "sap.ui.model.json.JSONModel"
       },
-      "": {
-        "dataSource": "mainService",
+      "docService": {
+        "dataSource": "docService",
         "preload": true,
         "settings": {
           "operationMode": "Server",
@@ -112,8 +112,8 @@
           "earlyRequests": true
         }
       },
-      "docService": {
-        "dataSource": "docService",
+      "": {
+        "dataSource": "mainService",
         "preload": true,
         "settings": {
           "operationMode": "Server",
@@ -145,9 +145,9 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "path": "com.crescent.app.debitnoteform.view",
+        "path": "com.crescent.app.debitnoteform2.view",
         "async": true,
-        "viewPath": "com.crescent.app.debitnoteform.view"
+        "viewPath": "com.crescent.app.debitnoteform2.view"
       },
       "routes": [
         {
@@ -166,7 +166,7 @@
       }
     },
     "rootView": {
-      "viewName": "com.crescent.app.debitnoteform.view.App",
+      "viewName": "com.crescent.app.debitnoteform2.view.App",
       "type": "XML",
       "id": "App",
       "async": true

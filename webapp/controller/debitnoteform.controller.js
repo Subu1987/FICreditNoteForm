@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (Controller, MessageBox, Filter, FilterOperator, Fragment) {
     "use strict";
 
-    return Controller.extend("com.crescent.app.debitnoteform.controller.debitnoteform", {
+    return Controller.extend("com.crescent.app.debitnoteform2.controller.debitnoteform", {
         onInit: function () {
             this._busyDialog = new sap.m.BusyDialog();
             // Store references to input controls
@@ -69,7 +69,7 @@ sap.ui.define([
             if (!this.oOpenDialogFiscalYear) {
                 Fragment.load({
                     id: this.getView().getId(),
-                    name: "com.crescent.app.debitnoteform.view.fragments.DialogFiscalYear",
+                    name: "com.crescent.app.debitnoteform2.view.fragments.DialogFiscalYear",
                     controller: this
                 }).then(oDialog => {
                     this.oOpenDialogFiscalYear = oDialog;
@@ -97,7 +97,7 @@ sap.ui.define([
             if (!this.oOpenDialogDocumentNo) {
                 Fragment.load({
                     id: sViewId,
-                    name: "com.crescent.app.debitnoteform.view.fragments.DialogDocumentNo",
+                    name: "com.crescent.app.debitnoteform2.view.fragments.DialogDocumentNo",
                     controller: this
                 }).then(oDialog => {
                     console.log("Document No Dialog loaded:", oDialog);
@@ -293,7 +293,7 @@ sap.ui.define([
                 }
 
                 const sFiscalYear = oGlobalDataModel.getProperty("/FiscalYear") || "2024";
-                const sEntityPath = `/docSet(FiscalYear='${sFiscalYear}')/Set`;
+                const sEntityPath = `/documentSet(FiscalYear='${sFiscalYear}')/Set`;
 
                 this._busyDialog.open();
 
@@ -371,7 +371,7 @@ sap.ui.define([
                 return;
             }
 
-            const sEntityPath = "/debitSet";
+            const sEntityPath = "/dbtSet";
             const sDocumentNoFilter = aDocumentNos.map(sDocNo => `Document_No eq '${sDocNo}'`).join(" or ");
             const sFilter = `CompanyCode eq '1000' and FiscalYear eq '${sFiscalYear}' and (${sDocumentNoFilter})`;
             const sUrlParameters = {
@@ -417,7 +417,7 @@ sap.ui.define([
                     oDebitNoteDataModel.setData({ value: aAllData });
                     console.log("Fetched debitSet data:", aAllData);
 
-                    return this._loadImageAsBase64("com/crescent/app/debitnoteform/images/Crescent_logo_new.png")
+                    return this._loadImageAsBase64("com/crescent/app/debitnoteform2/images/Crescent_logo_new.png")
                         .catch(error => {
                             console.warn(`Logo loading failed: ${error.message}. Using placeholder.`);
                             return null;
@@ -546,11 +546,13 @@ sap.ui.define([
             };
 
             const items = data.value.map(item => ({
-                materialCode: item.Material_Code || '-',
-                description: item.Material_Description || '-',
-                hsn: item.HSN || '-',
+                materialCode: item.Material_Code || ' ',
+                description: item.Material_Description
+                    ? item.Material_Description
+                    : (item.GLAccountLongName || ' '),
+                hsn: item.HSN || ' ',
                 quantity: this._formatNumber(item.Quantity, 3),
-                uom: item.UOM || '-',
+                uom: item.UOM || ' ',
                 unitPrice: this._formatNumber(item.Unit_Price, 2),
                 totalPrice: this._formatNumber(item.Total_Price, 2),
                 currency: item.Currency || 'INR',
@@ -561,6 +563,7 @@ sap.ui.define([
                 igstRate: item.Igst_Rate ? `${this._formatNumber(item.Igst_Rate, 2)}%` : '0.00%',
                 igstAmt: this._formatNumber(item.Igst_Amt, 2)
             }));
+
 
             const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.totalPrice) || 0), 0).toFixed(2);
             const totalCgst = items.reduce((sum, item) => sum + (parseFloat(item.cgstAmt) || 0), 0).toFixed(2);
@@ -665,7 +668,7 @@ sap.ui.define([
                 }, ...Array(13).fill({})],
                 [
                     { text: 'Material Code', style: 'tableHeader', alignment: 'left' },
-                    { text: 'Description', style: 'tableHeader', alignment: 'left' },
+                    { text: 'Material / GL Description', style: 'tableHeader', alignment: 'left' },
                     { text: 'HSN/SAC', style: 'tableHeader' },
                     { text: 'Quantity', style: 'tableHeader' },
                     { text: 'UOM', style: 'tableHeader' },

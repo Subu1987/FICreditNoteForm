@@ -49,36 +49,28 @@
         <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema Namespace="com.sap.gateway.srvd.zdebit_search_service.v0001" Alias="SAP__self">
+        <Schema Namespace="com.sap.gateway.srvd.zdebit_note_search_help_srv.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="docSetType">
-                <Key>
-                    <PropertyRef Name="ReferenceDocument"/>
-                </Key>
-                <Property Name="ReferenceDocument" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <NavigationProperty Name="Parameters" Type="com.sap.gateway.srvd.zdebit_search_service.v0001.docSetParameters" Nullable="false"/>
-            </EntityType>
-            <EntityType Name="docSetParameters">
+            <EntityType Name="documentSetParameters">
                 <Key>
                     <PropertyRef Name="FiscalYear"/>
                 </Key>
                 <Property Name="FiscalYear" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <NavigationProperty Name="Set" Type="Collection(com.sap.gateway.srvd.zdebit_search_service.v0001.docSetType)" Partner="Parameters" ContainsTarget="true"/>
+                <NavigationProperty Name="Set" Type="Collection(com.sap.gateway.srvd.zdebit_note_search_help_srv.v0001.documentSetType)" Partner="Parameters" ContainsTarget="true"/>
+            </EntityType>
+            <EntityType Name="documentSetType">
+                <Key>
+                    <PropertyRef Name="ReferenceDocument"/>
+                </Key>
+                <Property Name="ReferenceDocument" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <NavigationProperty Name="Parameters" Type="com.sap.gateway.srvd.zdebit_note_search_help_srv.v0001.documentSetParameters" Nullable="false"/>
             </EntityType>
             <EntityContainer Name="Container">
-                <EntitySet Name="docSet" EntityType="com.sap.gateway.srvd.zdebit_search_service.v0001.docSetParameters">
-                    <NavigationPropertyBinding Path="Set/Parameters" Target="docSet"/>
+                <EntitySet Name="documentSet" EntityType="com.sap.gateway.srvd.zdebit_note_search_help_srv.v0001.documentSetParameters">
+                    <NavigationPropertyBinding Path="Set/Parameters" Target="documentSet"/>
                 </EntitySet>
             </EntityContainer>
-            <Annotations Target="SAP__self.docSetType/ReferenceDocument">
-                <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Journal Entry"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D"/>
-            </Annotations>
-            <Annotations Target="SAP__self.docSetType">
-                <Annotation Term="SAP__common.Label" String="Reference Document Master Url"/>
-            </Annotations>
-            <Annotations Target="SAP__self.docSetParameters/FiscalYear">
+            <Annotations Target="SAP__self.documentSetParameters/FiscalYear">
                 <Annotation Term="SAP__common.Label" String="Fiscal Year"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Fiscal Year"/>
                 <Annotation Term="SAP__core.Computed"/>
@@ -86,7 +78,7 @@
                 <Annotation Term="SAP__common.Heading" String="Year"/>
                 <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR"/>
             </Annotations>
-            <Annotations Target="SAP__self.Container/docSet">
+            <Annotations Target="SAP__self.Container/documentSet">
                 <Annotation Term="SAP__capabilities.NavigationRestrictions">
                     <Record>
                         <PropertyValue Property="RestrictedProperties">
@@ -157,8 +149,16 @@
                     </Record>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.docSetParameters">
+            <Annotations Target="SAP__self.documentSetParameters">
                 <Annotation Term="SAP__common.ResultContext"/>
+            </Annotations>
+            <Annotations Target="SAP__self.documentSetType/ReferenceDocument">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Journal Entry"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D"/>
+            </Annotations>
+            <Annotations Target="SAP__self.documentSetType">
+                <Annotation Term="SAP__common.Label" String="Reference Document Master Url"/>
             </Annotations>
             <Annotations Target="SAP__self.Container">
                 <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>

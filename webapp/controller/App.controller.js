@@ -3,7 +3,7 @@ sap.ui.define([
 ], (BaseController) => {
   "use strict";
 
-  return BaseController.extend("com.crescent.app.debitnoteform.controller.App", {
+  return BaseController.extend("com.crescent.app.debitnoteform2.controller.App", {
       onInit() {
       }
   });

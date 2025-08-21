@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: com.crescent.app.debitnoteform
+  name: com.crescent.app.debitnoteform2
 type: application
 server:
   customMiddleware:
@@ -23,11 +23,11 @@ server:
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001/
+            path: /sap/opu/odata4/sap/zcrdt_dbt_bind/srvd/sap/zdebit_note_search_help_srv/0001/
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001/
+            path: /sap/opu/odata4/sap/zcrd_dbt_note_bind/srvd/sap/zdebit_note_srv/0001/
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -44,12 +44,12 @@ server:
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata4/sap/zui_debit_note_o4/srvd/sap/zui_debit_note_o4/0001
-            metadataPath: ./webapp/localService/zui_debit_note_o4/metadata.xml
-            mockdataPath: ./webapp/localService/zui_debit_note_o4/data
+          - urlPath: /sap/opu/odata4/sap/zcrdt_dbt_bind/srvd/sap/zdebit_note_search_help_srv/0001
+            metadataPath: ./webapp/localService/zdebit_note_search_help_srv/metadata.xml
+            mockdataPath: ./webapp/localService/zdebit_note_search_help_srv/data
             generateMockData: true
-          - urlPath: /sap/opu/odata4/sap/zdbt_f4_help_bind/srvd/sap/zdebit_search_service/0001
-            metadataPath: ./webapp/localService/zdebit_search_service/metadata.xml
-            mockdataPath: ./webapp/localService/zdebit_search_service/data
+          - urlPath: /sap/opu/odata4/sap/zcrd_dbt_note_bind/srvd/sap/zdebit_note_srv/0001
+            metadataPath: ./webapp/localService/zdebit_note_srv/metadata.xml
+            mockdataPath: ./webapp/localService/zdebit_note_srv/data
             generateMockData: true
         annotations: []
