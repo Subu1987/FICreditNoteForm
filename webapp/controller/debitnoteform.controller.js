@@ -494,7 +494,7 @@ sap.ui.define([
         },
 
         _generatePdfFromData: function (base64Image, data) {
-            const oPdfContainer = this.byId("pdfIframeContainer");
+            var oPdfContainer = this.byId("pdfIframeContainer");
             if (!oPdfContainer) {
                 console.error("pdfIframeContainer control not found!");
                 MessageBox.error("PDF container not found. Please check the view configuration.");
@@ -514,9 +514,9 @@ sap.ui.define([
             }
 
             // ✅ Get the first non-empty record
-            const firstRecord = this._findFirstValidRecord(data.value) || {};
+            var firstRecord = this._findFirstValidRecord(data.value) || {};
 
-            const borderLayout = {
+            var borderLayout = {
                 hLineWidth: () => 0.5,
                 vLineWidth: () => 0.5,
                 hLineColor: () => '#000000',
@@ -526,7 +526,7 @@ sap.ui.define([
                 paddingTop: () => 4,
                 paddingBottom: () => 4
             };
-            const headerLayout = {
+            var headerLayout = {
                 hLineWidth: () => 0.5,
                 vLineWidth: () => 0.5,
                 hLineColor: () => '#000000',
@@ -536,7 +536,7 @@ sap.ui.define([
                 paddingTop: () => 12,
                 paddingBottom: () => 12
             };
-            const noBordersNoPadding = {
+            var noBordersNoPadding = {
                 hLineWidth: () => 0,
                 vLineWidth: () => 0,
                 paddingLeft: () => 0,
@@ -545,7 +545,7 @@ sap.ui.define([
                 paddingBottom: () => 0
             };
 
-            const items = data.value.map(item => ({
+            var items = data.value.map(item => ({
                 materialCode: item.Material_Code || ' ',
                 description: item.Material_Description
                     ? item.Material_Description
@@ -564,15 +564,21 @@ sap.ui.define([
                 igstAmt: this._formatNumber(item.Igst_Amt, 2)
             }));
 
+            // ✅ Skip first record if Document_No starts with "17"
+            if (data.value[0]?.Document_No?.startsWith("17")) {
+                items = items.slice(1);
+            }
 
-            const totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.totalPrice) || 0), 0).toFixed(2);
-            const totalCgst = items.reduce((sum, item) => sum + (parseFloat(item.cgstAmt) || 0), 0).toFixed(2);
-            const totalSgst = items.reduce((sum, item) => sum + (parseFloat(item.sgstAmt) || 0), 0).toFixed(2);
-            const totalIgst = items.reduce((sum, item) => sum + (parseFloat(item.igstAmt) || 0), 0).toFixed(2);
-            const grandTotal = (parseFloat(totalPrice) + parseFloat(totalCgst) + parseFloat(totalSgst) + parseFloat(totalIgst)).toFixed(2);
 
-            const itemsPerPage = 18;
-            const tableBody = [
+
+            var totalPrice = items.reduce((sum, item) => sum + (parseFloat(item.totalPrice) || 0), 0).toFixed(2);
+            var totalCgst = items.reduce((sum, item) => sum + (parseFloat(item.cgstAmt) || 0), 0).toFixed(2);
+            var totalSgst = items.reduce((sum, item) => sum + (parseFloat(item.sgstAmt) || 0), 0).toFixed(2);
+            var totalIgst = items.reduce((sum, item) => sum + (parseFloat(item.igstAmt) || 0), 0).toFixed(2);
+            var grandTotal = (parseFloat(totalPrice) + parseFloat(totalCgst) + parseFloat(totalSgst) + parseFloat(totalIgst)).toFixed(2);
+
+            var itemsPerPage = 18;
+            var tableBody = [
                 [{ colSpan: 14, stack: [{ table: { widths: ['*'], body: [[{ text: 'DEBIT NOTE', style: 'header', alignment: 'center', border: [false, false, false, false] }]] } }], border: [true, true, true, true], layout: headerLayout }, ...Array(13).fill({})],
                 [{
                     colSpan: 14,
@@ -594,7 +600,7 @@ sap.ui.define([
                                         { text: 'CRESCENT FOUNDRY CO PVT. LTD.', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
                                         { text: firstRecord.Plant_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: firstRecord.Plant_Address_Line2 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: 'CIN NO: U29100WB1982PTCO35426', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: 'CIN NO: U29100WB1982PTCO35426', style: 'tableBody', alignment: 'left', margin: [2, 4, 2, 0] },
                                         { text: `GSTNO: ${firstRecord.GSTN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `PAN NO: ${firstRecord.PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `STATE CODE: ${firstRecord.Plant_State_Code || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
@@ -686,23 +692,23 @@ sap.ui.define([
 
             let i = 0;
             while (i < items.length) {
-                const chunk = items.slice(i, i + itemsPerPage);
+                var chunk = items.slice(i, i + itemsPerPage);
                 chunk.forEach((item, index) => {
-                    const row = [
-                        { text: item.materialCode, style: 'tableBody', alignment: 'left' },
-                        { text: item.description, style: 'tableBody', alignment: 'left' },
-                        { text: item.hsn, style: 'tableBody' },
-                        { text: item.quantity, style: 'tableBody' },
-                        { text: item.uom, style: 'tableBody' },
-                        { text: item.currency, style: 'tableBody' },
-                        { text: item.unitPrice, style: 'tableBody' },
-                        { text: item.totalPrice, style: 'tableBody' },
-                        { text: item.cgstRate, style: 'tableBody' },
-                        { text: item.cgstAmt, style: 'tableBody' },
-                        { text: item.sgstRate, style: 'tableBody' },
-                        { text: item.sgstAmt, style: 'tableBody' },
-                        { text: item.igstRate, style: 'tableBody' },
-                        { text: item.igstAmt, style: 'tableBody' }
+                    var row = [
+                        { text: item.materialCode, style: 'tableBodySmall', alignment: 'left' },
+                        { text: item.description, style: 'tableBodySmall', alignment: 'left' },
+                        { text: item.hsn, style: 'tableBodySmall' },
+                        { text: item.quantity, style: 'tableBodySmall' },
+                        { text: item.uom, style: 'tableBodySmall' },
+                        { text: item.currency, style: 'tableBodySmall' },
+                        { text: item.unitPrice, style: 'tableBodySmall', alignment: 'right' },
+                        { text: item.totalPrice, style: 'tableBodySmall', alignment: 'right' },
+                        { text: item.cgstRate, style: 'tableBodySmall' },
+                        { text: item.cgstAmt, style: 'tableBodySmall', alignment: 'right' },
+                        { text: item.sgstRate, style: 'tableBodySmall' },
+                        { text: item.sgstAmt, style: 'tableBodySmall', alignment: 'right' },
+                        { text: item.igstRate, style: 'tableBodySmall' },
+                        { text: item.igstAmt, style: 'tableBodySmall', alignment: 'right' }
                     ];
                     if (index === chunk.length - 1 && i + itemsPerPage < items.length) {
                         row[0].pageBreak = 'after';
@@ -721,13 +727,13 @@ sap.ui.define([
                     { colSpan: 2, text: 'Total', style: 'subHeader', alignment: 'left' },
                     {},
                     {},
-                    { text: totalPrice, style: 'subHeader', alignment: 'center' },
+                    { text: totalPrice, style: 'subHeader', alignment: 'right' },
                     {},
-                    { text: totalCgst, style: 'subHeader', alignment: 'center' },
+                    { text: totalCgst, style: 'subHeader', alignment: 'right' },
                     {},
-                    { text: totalSgst, style: 'subHeader', alignment: 'center' },
+                    { text: totalSgst, style: 'subHeader', alignment: 'right' },
                     {},
-                    { text: totalIgst, style: 'subHeader', alignment: 'center' }
+                    { text: totalIgst, style: 'subHeader', alignment: 'right' }
                 ],
                 [
                     { colSpan: 4, text: '', style: 'tableBody' },
@@ -747,7 +753,7 @@ sap.ui.define([
                 ]
             );
 
-            const docDefinition = {
+            var docDefinition = {
                 pageSize: 'A4',
                 pageMargins: [20, 20, 20, 70],
                 content: [{
@@ -770,15 +776,16 @@ sap.ui.define([
                     subHeader: { fontSize: 7, bold: true },
                     tableHeader: { fontSize: 6, bold: true, fillColor: '#f0f0f0', alignment: 'center' },
                     tableBody: { fontSize: 6, alignment: 'center' },
+                    tableBodySmall: { fontSize: 5, alignment: 'center' },
                     footerText: { fontSize: 6, italics: true }
                 },
                 defaultStyle: { font: 'Roboto', fontSize: 7 }
             };
 
             try {
-                const pdfDoc = pdfMake.createPdf(docDefinition);
+                var pdfDoc = pdfMake.createPdf(docDefinition);
                 pdfDoc.getBlob(blob => {
-                    const url = URL.createObjectURL(blob);
+                    var url = URL.createObjectURL(blob);
                     oPdfContainer.setContent(`<iframe src="${url}" width="100%" height="900px" style="border:none;"></iframe>`);
                 });
             } catch (error) {
