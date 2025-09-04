@@ -1,4 +1,4 @@
-<mvc:View controllerName="com.crescent.app.debitnoteform2.controller.App"
+<mvc:View controllerName="com.crescent.app.creditnoteformfico.controller.App"
     displayBlock="true"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m">

@@ -1,7 +1,7 @@
 {
   "_version": "1.65.0",
   "sap.app": {
-    "id": "com.crescent.app.debitnoteform2",
+    "id": "com.crescent.app.creditnoteformfico",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -16,40 +16,31 @@
       "toolsId": "81cc65aa-8f34-4f76-b8a7-049001da9115"
     },
     "dataSources": {
-      "docService": {
-        "uri": "/sap/opu/odata4/sap/zcrdt_dbt_bind/srvd/sap/zdebit_note_search_help_srv/0001/",
+      "mainService": {
+        "uri": "/sap/opu/odata4/sap/zfi_credit_note_srv_bind/srvd/sap/zfi_credit_note_srv/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/zdebit_note_search_help_srv/metadata.xml",
+          "localUri": "localService/mainService/metadata.xml",
           "odataVersion": "4.0"
         }
       },
-      "mainService": {
-        "uri": "/sap/opu/odata4/sap/zcrd_dbt_note_bind/srvd/sap/zdebit_note_srv/0001/",
+      "docService": {
+        "uri": "/sap/opu/odata4/sap/zfi_crdnt_srv_bind/srvd/sap/zfi_crdnt_srv/0001/",
         "type": "OData",
         "settings": {
           "annotations": [],
-          "localUri": "localService/zdebit_note_srv/metadata.xml",
+          "localUri": "localService/zfi_crdnt_srv/metadata.xml",
           "odataVersion": "4.0"
         }
       }
     },
     "crossNavigation": {
       "inbounds": {
-        "ZDEBITNOTEFORM-Display": {
-          "semanticObject": "ZDEBITNOTEFORM",
+        "ZFICREDITFORM-Display": {
+          "semanticObject": "ZFICREDITFORM",
           "action": "Display",
-          "title": "{{ZDEBITNOTEFORM-Display.flpTitle}}",
-          "signature": {
-            "parameters": {},
-            "additionalParameters": "allowed"
-          }
-        },
-        "ZDEBITNOTEFORM2-Display": {
-          "semanticObject": "ZDEBITNOTEFORM2",
-          "action": "Display",
-          "title": "{{ZDEBITNOTEFORM2-Display.flpTitle}}",
+          "title": "{{ZFICREDITFORM-Display.flpTitle}}",
           "signature": {
             "parameters": {},
             "additionalParameters": "allowed"
@@ -91,20 +82,20 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "com.infocus.zdebitnoteform.i18n.i18n"
+          "bundleName": "com.infocus.creditnoteformfico.i18n.i18n"
         }
       },
       "globalData": {
         "type": "sap.ui.model.json.JSONModel"
       },
-      "debitNoteData": {
+      "creditNoteData": {
         "type": "sap.ui.model.json.JSONModel"
       },
       "documentNoData": {
         "type": "sap.ui.model.json.JSONModel"
       },
-      "docService": {
-        "dataSource": "docService",
+      "": {
+        "dataSource": "mainService",
         "preload": true,
         "settings": {
           "operationMode": "Server",
@@ -112,8 +103,8 @@
           "earlyRequests": true
         }
       },
-      "": {
-        "dataSource": "mainService",
+      "docService": {
+        "dataSource": "docService",
         "preload": true,
         "settings": {
           "operationMode": "Server",
@@ -145,28 +136,28 @@
         "transition": "slide",
         "type": "View",
         "viewType": "XML",
-        "path": "com.crescent.app.debitnoteform2.view",
+        "path": "com.crescent.app.creditnoteformfico.view",
         "async": true,
-        "viewPath": "com.crescent.app.debitnoteform2.view"
+        "viewPath": "com.crescent.app.creditnoteformfico.view"
       },
       "routes": [
         {
-          "name": "Routedebitnoteform",
+          "name": "Routecreditnoteform",
           "pattern": ":?query:",
           "target": [
-            "Targetdebitnoteform"
+            "Targetcreditnoteform"
           ]
         }
       ],
       "targets": {
-        "Targetdebitnoteform": {
-          "id": "debitnoteform",
-          "name": "debitnoteform"
+        "Targetcreditnoteform": {
+          "id": "creditnoteform",
+          "name": "creditnoteform"
         }
       }
     },
     "rootView": {
-      "viewName": "com.crescent.app.debitnoteform2.view.App",
+      "viewName": "com.crescent.app.creditnoteformfico.view.App",
       "type": "XML",
       "id": "App",
       "async": true

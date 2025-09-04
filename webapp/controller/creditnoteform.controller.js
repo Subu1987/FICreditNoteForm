@@ -7,7 +7,7 @@ sap.ui.define([
 ], function (Controller, MessageBox, Filter, FilterOperator, Fragment) {
     "use strict";
 
-    return Controller.extend("com.crescent.app.debitnoteform2.controller.debitnoteform", {
+    return Controller.extend("com.crescent.app.creditnoteformfico.controller.debitnoteform", {
         onInit: function () {
             this._busyDialog = new sap.m.BusyDialog();
             // Store references to input controls
@@ -69,7 +69,7 @@ sap.ui.define([
             if (!this.oOpenDialogFiscalYear) {
                 Fragment.load({
                     id: this.getView().getId(),
-                    name: "com.crescent.app.debitnoteform2.view.fragments.DialogFiscalYear",
+                    name: "com.crescent.app.creditnoteformfico.view.fragments.DialogFiscalYear",
                     controller: this
                 }).then(oDialog => {
                     this.oOpenDialogFiscalYear = oDialog;
@@ -97,7 +97,7 @@ sap.ui.define([
             if (!this.oOpenDialogDocumentNo) {
                 Fragment.load({
                     id: sViewId,
-                    name: "com.crescent.app.debitnoteform2.view.fragments.DialogDocumentNo",
+                    name: "com.crescent.app.creditnoteformfico.view.fragments.DialogDocumentNo",
                     controller: this
                 }).then(oDialog => {
                     console.log("Document No Dialog loaded:", oDialog);
@@ -293,7 +293,7 @@ sap.ui.define([
                 }
 
                 const sFiscalYear = oGlobalDataModel.getProperty("/FiscalYear") || "2024";
-                const sEntityPath = `/documentSet(FiscalYear='${sFiscalYear}')/Set`;
+                const sEntityPath = `/docHelpSet(FiscalYear='${sFiscalYear}')/Set`;
 
                 this._busyDialog.open();
 
@@ -354,11 +354,11 @@ sap.ui.define([
 
             const oModel = this.getOwnerComponent().getModel();
             const oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
-            const oDebitNoteDataModel = this.getOwnerComponent().getModel("debitNoteData");
+            const oCreditNoteDataModel = this.getOwnerComponent().getModel("creditNoteData");
             const oPdfContainer = this.byId("pdfIframeContainer");
 
-            if (!oModel || !oModel.bindList || !oGlobalDataModel || !oDebitNoteDataModel || !oPdfContainer) {
-                MessageBox.error("OData model, globalData model, debitNoteData model, or pdfIframeContainer initialization failed.");
+            if (!oModel || !oModel.bindList || !oGlobalDataModel || !oCreditNoteDataModel || !oPdfContainer) {
+                MessageBox.error("OData model, globalData model, creditNoteData model, or pdfIframeContainer initialization failed.");
                 return;
             }
 
@@ -371,7 +371,7 @@ sap.ui.define([
                 return;
             }
 
-            const sEntityPath = "/dbtSet";
+            const sEntityPath = "/ZFI_CREDIT_NOTE";
             const sDocumentNoFilter = aDocumentNos.map(sDocNo => `Document_No eq '${sDocNo}'`).join(" or ");
             const sFilter = `CompanyCode eq '1000' and FiscalYear eq '${sFiscalYear}' and (${sDocumentNoFilter})`;
             const sUrlParameters = {
@@ -414,15 +414,15 @@ sap.ui.define([
                         return;
                     }
 
-                    oDebitNoteDataModel.setData({ value: aAllData });
+                    oCreditNoteDataModel.setData({ value: aAllData });
                     console.log("Fetched debitSet data:", aAllData);
 
-                    return this._loadImageAsBase64("com/crescent/app/debitnoteform2/images/Crescent_logo_new.png")
+                    return this._loadImageAsBase64("com/crescent/app/creditnoteformfico/images/Crescent_logo_new.png")
                         .catch(error => {
                             console.warn(`Logo loading failed: ${error.message}. Using placeholder.`);
                             return null;
                         })
-                        .then(base64Image => this._generatePdfFromData(base64Image, oDebitNoteDataModel.getData()));
+                        .then(base64Image => this._generatePdfFromData(base64Image, oCreditNoteDataModel.getData()));
                 })
                 .catch(error => {
                     oPdfContainer.setContent(this._getNoDataHtml());
@@ -579,11 +579,11 @@ sap.ui.define([
 
             var itemsPerPage = 18;
             var tableBody = [
-                [{ colSpan: 14, stack: [{ table: { widths: ['*'], body: [[{ text: 'DEBIT NOTE', style: 'header', alignment: 'center', border: [false, false, false, false] }]] } }], border: [true, true, true, true], layout: headerLayout }, ...Array(13).fill({})],
+                [{ colSpan: 14, stack: [{ table: { widths: ['*'], body: [[{ text: 'CREDIT NOTE', style: 'header', alignment: 'center', border: [false, false, false, false] }]] } }], border: [true, true, true, true], layout: headerLayout }, ...Array(13).fill({})],
                 [{
                     colSpan: 14,
                     table: {
-                        widths: ['12%', '38%', '12%', '38%'],
+                        widths: ['12%', '38%', '38%', '12%'],
                         heights: [50, 50],
                         body: [
                             [
@@ -609,12 +609,6 @@ sap.ui.define([
                                 },
                                 {
                                     stack: [
-                                        { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
-                                    ],
-                                    border: [true, true, true, false]
-                                },
-                                {
-                                    stack: [
                                         { text: `Tel: 03322826819`, style: 'tableBody', alignment: 'left', margin: [2, 2, 2, 0] },
                                         { text: `Fax: (033)2282-1886/3952`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `Website: admin@crescentfoundry.in`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
@@ -626,7 +620,13 @@ sap.ui.define([
                                         { text: `Ref. Date: ${this._formatDate(firstRecord.ref_date) || 'N/A'}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
-                                }
+                                },
+                                {
+                                    stack: [
+                                        { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
+                                    ],
+                                    border: [true, true, true, false]
+                                },
                             ],
                             [
                                 {
@@ -638,12 +638,25 @@ sap.ui.define([
                                 {
                                     stack: [
                                         { text: 'Bill To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Vendor_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `GST No: ${firstRecord.Vendor_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN No: ${firstRecord.Vendor_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `GST No: ${firstRecord.Customer_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN No: ${firstRecord.Customer_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
+                                    ],
+                                    border: [true, true, true, true]
+                                },
+                                {
+                                    stack: [
+                                        { text: 'Ship To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
+                                        { text: firstRecord.Customer_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.Customer_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `GST No: ${firstRecord.Customer_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN No: ${firstRecord.Customer_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
@@ -653,20 +666,8 @@ sap.ui.define([
                                         { text: '', style: 'tableBody', margin: [0, 0, 0, 0] }
                                     ],
                                     border: [true, false, true, true]
-                                },
-                                {
-                                    stack: [
-                                        { text: 'Ship To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Vendor_Name || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line1 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line3 || 'N/A', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Vendor_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `GST No: ${firstRecord.Vendor_GST_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN No: ${firstRecord.Vendor_PAN_No || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || 'N/A'}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
-                                    ],
-                                    border: [true, true, true, true]
                                 }
+                                
                             ]
                         ]
                     },
@@ -722,7 +723,7 @@ sap.ui.define([
 
             tableBody.push(
                 [
-                    { colSpan: 4, text: `Reason of Debit Note: ${firstRecord.Note_In_Header || ' '}`, style: 'subHeader', alignment: 'left' },
+                    { colSpan: 4, text: `Reason of Credit Note: ${firstRecord.Note_In_Header || ' '}`, style: 'subHeader', alignment: 'left' },
                     {}, {}, {},
                     { colSpan: 2, text: 'Total', style: 'subHeader', alignment: 'left' },
                     {},

@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="com.crescent.app.debitnoteform2.controller.debitnoteform"
+    controllerName="com.crescent.app.creditnoteformfico.controller.creditnoteform"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:core="sap.ui.core"
     xmlns="sap.m"
