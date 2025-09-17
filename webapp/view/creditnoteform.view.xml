@@ -1,5 +1,5 @@
 <mvc:View
-    controllerName="com.crescent.app.creditnoteformfico.controller.creditnoteform"
+    controllerName="com.crescent.app.creditnoteformsd.controller.creditnoteform"
     xmlns:mvc="sap.ui.core.mvc"
     xmlns:core="sap.ui.core"
     xmlns="sap.m"
@@ -12,10 +12,8 @@
         <f:title>
             <f:DynamicPageTitle>
                 <f:heading>
-                    <svm:SmartVariantManagement
-                        id="svm"
-                        showExecuteOnSelection="true"
-                    />
+                    <!-- ⚠️ Use SmartVariantManagementUi2 if you really need showExecuteOnSelection -->
+                    <svm:SmartVariantManagement id="svm" />
                 </f:heading>
                 <f:expandedContent>
                     <Text
@@ -44,68 +42,98 @@
                         afterVariantLoad=".onAfterVariantLoad"
                     >
                         <fb:filterGroupItems>
+                            <!-- Document No -->
                             <fb:FilterGroupItem
-                                name="companyCode"
-                                label="Company Code"
-                                groupName="Group1"
-                                visibleInFilterBar="true"
-                            >
-                                <fb:control>
-                                    <Input
-                                        id="idCompanyCodeInput"
-                                        tooltip="Select from list"
-                                        showValueHelp="true"
-                                        valueHelpOnly="true"
-                                        value='1000'
-                                        valueHelpRequest=".onOpenCompanyCodeDialog"
-                                        placeholder="Select Company Code"
-                                        showClearIcon="true"
-                                        required="true"
-                                        enabled="false"
-                                    />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-
-                            <fb:FilterGroupItem
-                                name="fiscalYear"
-                                label="Fiscal Year"
-                                groupName="Group1"
-                                visibleInFilterBar="true"
-                            >
-                                <fb:control>
-                                    <Input
-                                        id="idFiscalYearInput"
-                                        tooltip="Select from list"
-                                        showValueHelp="true"
-                                        valueHelpOnly="true"
-                                        valueHelpRequest=".onOpenFiscalYearDialog"
-                                        placeholder="Select Fiscal Year"
-                                        showClearIcon="true"
-                                        required="true"
-                                        enabled="true"
-                                        change=".onFiscalYearClear"
-                                    />
-                                </fb:control>
-                            </fb:FilterGroupItem>
-                            <fb:FilterGroupItem
-                                name="deliveryDocument"
+                                name="documentNo"
                                 label="Document No"
                                 groupName="Group1"
                                 visibleInFilterBar="true"
                             >
                                 <fb:control>
-                                    <Input
-                                        id="idDeliveryDocumentInput"
-                                        tooltip="Select from list"
-                                        showValueHelp="true"
-                                        valueHelpOnly="true"
-                                        valueHelpRequest=".onOpenDeliveryDocumentDialog"
-                                        value="{globalData>/selectedDocumentNosDisplay}"
+                                    <ComboBox
+                                        id="idDocumentNoInput"
+                                        selectedKey="{globalData>/documentNo}"
                                         placeholder="Select Document No"
-                                        showClearIcon="true"
                                         required="true"
-                                        enabled="false"
-                                    />
+                                        showClearIcon="true"
+                                        items="{parametersData>/value}"
+                                    >
+                                        <core:Item
+                                            key="{parametersData>documentNo}"
+                                            text="{parametersData>documentNo}"
+                                        />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!-- Sales Org -->
+                            <fb:FilterGroupItem
+                                name="salesOrg"
+                                label="Sales Org"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <ComboBox
+                                        id="idSalesOrgInput"
+                                        selectedKey="{globalData>/salesOrg}"
+                                        placeholder="Select Sales Org"
+                                        showClearIcon="true"
+                                        items="{parametersData>/value}"
+                                    >
+                                        <core:Item
+                                            key="{parametersData>salesOrg}"
+                                            text="{parametersData>salesOrg}"
+                                        />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!-- Document Date -->
+                            <fb:FilterGroupItem
+                                name="documentDate"
+                                label="Document Date"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <ComboBox
+                                        id="idDocumentDateInput"
+                                        selectedKey="{globalData>/documentDate}"
+                                        placeholder="Select Document Date"
+                                        required="true"
+                                        showClearIcon="true"
+                                        items="{parametersData>/value}"
+                                    >
+                                        <core:Item
+                                            key="{parametersData>documentDate}"
+                                            text="{parametersData>documentDate}"
+                                        />
+                                    </ComboBox>
+                                </fb:control>
+                            </fb:FilterGroupItem>
+
+                            <!-- Payer -->
+                            <fb:FilterGroupItem
+                                name="payer"
+                                label="Payer"
+                                groupName="Group1"
+                                visibleInFilterBar="true"
+                            >
+                                <fb:control>
+                                    <ComboBox
+                                        id="idPayerInput"
+                                        selectedKey="{globalData>/payer}"
+                                        placeholder="Select Payer"
+                                        required="true"
+                                        showClearIcon="true"
+                                        items="{parametersData>/value}"
+                                    >
+                                        <core:Item
+                                            key="{parametersData>payer}"
+                                            text="{parametersData>payer}"
+                                        />
+                                    </ComboBox>
                                 </fb:control>
                             </fb:FilterGroupItem>
                         </fb:filterGroupItems>

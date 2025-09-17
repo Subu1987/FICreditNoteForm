@@ -7,19 +7,21 @@ sap.ui.define([
 ], function (Controller, MessageBox, Filter, FilterOperator, Fragment) {
     "use strict";
 
-    return Controller.extend("com.crescent.app.creditnoteformfico.controller.debitnoteform", {
+    return Controller.extend("com.crescent.app.creditnoteformsd.controller.debitnoteform", {
         onInit: function () {
             this._busyDialog = new sap.m.BusyDialog();
             // Store references to input controls
-            this._oDocumentNoInput = this.getView().byId("idDeliveryDocumentInput");
-            this._oFiscalYearInput = this.getView().byId("idFiscalYearInput");
+            // this._oDocumentNoInput = this.getView().byId("idDeliveryDocumentInput");
+            // this._oFiscalYearInput = this.getView().byId("idFiscalYearInput");
 
-            if (!this._oDocumentNoInput) {
-                console.error("Delivery Document Input control not found during initialization!");
-            }
-            if (!this._oFiscalYearInput) {
-                console.error("Fiscal Year Input control not found during initialization!");
-            }
+            // if (!this._oDocumentNoInput) {
+            //     console.error("Delivery Document Input control not found during initialization!");
+            // }
+            // if (!this._oFiscalYearInput) {
+            //     console.error("Fiscal Year Input control not found during initialization!");
+            // }
+
+            this.onFetchDocOData();
 
             const oPdfContainer = this.byId("pdfIframeContainer");
             if (oPdfContainer) {
@@ -29,32 +31,47 @@ sap.ui.define([
             }
         },
         _validateInputs: function () {
-            const oDocumentNoInput = this._oDocumentNoInput;
-            const oFiscalYearInput = this._oFiscalYearInput;
+            const oDocumentNoInput = this.byId("idDocumentNoInput");   // Document Number
+            const oSalesOrgInput = this.byId("idSalesOrgInput");     // Sales Org
+            const oDateInput = this.byId("idDocumentDateInput"); // Document Date
+            const oPayerInput = this.byId("idPayerInput");        // Payer
+
             let bValid = true;
 
-            // Validate Fiscal Year
-            if (!oFiscalYearInput.getValue().trim()) {
-                oFiscalYearInput.setValueState("Error");
-                // oFiscalYearInput.setValueStateText("Fiscal Year is required");
-                bValid = false;
-            } else {
-                oFiscalYearInput.setValueState("None");
-                // oFiscalYearInput.setValueStateText(" ");
-            }
-
-            // Validate Delivery Document
-            if (!oDocumentNoInput.getValue().trim()) {
+            // Document Number
+            if (!oDocumentNoInput.getSelectedKey()) {
                 oDocumentNoInput.setValueState("Error");
-                // oDocumentNoInput.setValueStateText("Delivery Document is required");
                 bValid = false;
             } else {
                 oDocumentNoInput.setValueState("None");
-                // oDocumentNoInput.setValueStateText(" ");
+            }
+
+            // Sales Org
+            if (!oSalesOrgInput.getSelectedKey()) {
+                oSalesOrgInput.setValueState("Error");
+                bValid = false;
+            } else {
+                oSalesOrgInput.setValueState("None");
+            }
+
+            // Document Date
+            if (!oDateInput.getValue().trim()) {
+                oDateInput.setValueState("Error");
+                bValid = false;
+            } else {
+                oDateInput.setValueState("None");
+            }
+
+            // Payer
+            if (!oPayerInput.getSelectedKey()) {
+                oPayerInput.setValueState("Error");
+                bValid = false;
+            } else {
+                oPayerInput.setValueState("None");
             }
 
             if (!bValid) {
-                MessageBox.show("Please fill in all required fields");
+                MessageBox.show("Please fill in all required fields (Document No, Sales Org, Document Date, Payer).");
             }
 
             return bValid;
@@ -69,7 +86,7 @@ sap.ui.define([
             if (!this.oOpenDialogFiscalYear) {
                 Fragment.load({
                     id: this.getView().getId(),
-                    name: "com.crescent.app.creditnoteformfico.view.fragments.DialogFiscalYear",
+                    name: "com.crescent.app.creditnoteformsd.view.fragments.DialogFiscalYear",
                     controller: this
                 }).then(oDialog => {
                     this.oOpenDialogFiscalYear = oDialog;
@@ -97,7 +114,7 @@ sap.ui.define([
             if (!this.oOpenDialogDocumentNo) {
                 Fragment.load({
                     id: sViewId,
-                    name: "com.crescent.app.creditnoteformfico.view.fragments.DialogDocumentNo",
+                    name: "com.crescent.app.creditnoteformsd.view.fragments.DialogDocumentNo",
                     controller: this
                 }).then(oDialog => {
                     console.log("Document No Dialog loaded:", oDialog);
@@ -284,17 +301,15 @@ sap.ui.define([
         onFetchDocOData: function () {
             return new Promise((resolve, reject) => {
                 const oDocModel = this.getOwnerComponent().getModel("docService");
+                const oParametersDataModel = this.getOwnerComponent().getModel("parametersData");
                 const oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
-                const oDocumentNoDataModel = this.getOwnerComponent().getModel("documentNoData");
 
-                if (!oDocModel || !oGlobalDataModel || !oDocumentNoDataModel) {
-                    MessageBox.error("docService, globalData, or documentNoData model initialization failed.");
+                if (!oDocModel || !oParametersDataModel || !oGlobalDataModel) {
+                    MessageBox.error("docService, parametersData, or globalData model initialization failed.");
                     return reject(new Error("Model initialization failed."));
                 }
 
-                const sFiscalYear = oGlobalDataModel.getProperty("/FiscalYear") || "2024";
-                const sEntityPath = `/docHelpSet(FiscalYear='${sFiscalYear}')/Set`;
-
+                const sEntityPath = "/f4_sd_cr_note";
                 this._busyDialog.open();
 
                 const aAllData = [];
@@ -327,11 +342,25 @@ sap.ui.define([
                 fetchAll()
                     .then(() => {
                         if (!aAllData.length) {
-                            MessageBox.warning("No data found for the specified Fiscal Year.");
+                            MessageBox.warning("No data found for the Parameters");
                             return resolve();
                         }
-                        oDocumentNoDataModel.setData({ value: aAllData });
-                        console.log("Fetched Document No data:", aAllData);
+
+                        // 🔑 Normalize backend keys → camelCase
+                        const aNormalized = aAllData.map(item => ({
+                            documentNo: item.document_no,
+                            salesOrg: item.SLS_ORG,
+                            documentDate: item.document_date,
+                            payer: item.Payer
+                        }));
+
+                        // Store full list in parametersData
+                        oParametersDataModel.setData({ value: aNormalized });
+
+                        // Store first record as selected in globalData
+                        oGlobalDataModel.setData(aNormalized[0] || {});
+
+                        console.log("Fetched & normalized data:", aNormalized);
                         resolve();
                     })
                     .catch(error => {
@@ -345,9 +374,8 @@ sap.ui.define([
             });
         },
 
-        onFetchOData: function () {
 
-            // Validate inputs before proceeding
+        onFetchOData: function () {
             if (!this._validateInputs()) {
                 return;
             }
@@ -362,18 +390,19 @@ sap.ui.define([
                 return;
             }
 
-            const sFiscalYear = oGlobalDataModel.getProperty("/FiscalYear") || "2024";
-            const aDocumentNos = oGlobalDataModel.getProperty("/selectedDocumentNos") || ["5105600176"];
+            const sDocumentNo = oGlobalDataModel.getProperty("/documentNo");
+            const sSalesOrg = oGlobalDataModel.getProperty("/salesOrg");
+            const sDocDate = oGlobalDataModel.getProperty("/documentDate");
+            const sPayer = oGlobalDataModel.getProperty("/payer");
 
-            if (!aDocumentNos.length) {
-                oPdfContainer.setContent(this._getNoDataHtml());
-                MessageBox.error("No document numbers selected.");
+            if (!sDocumentNo || !sSalesOrg || !sDocDate || !sPayer) {
+                MessageBox.error("Please fill all required fields (Document No, Sales Org, Date, Payer).");
                 return;
             }
 
-            const sEntityPath = "/ZFI_CREDIT_NOTE";
-            const sDocumentNoFilter = aDocumentNos.map(sDocNo => `Document_No eq '${sDocNo}'`).join(" or ");
-            const sFilter = `CompanyCode eq '1000' and FiscalYear eq '${sFiscalYear}' and (${sDocumentNoFilter})`;
+            const sEntityPath = "/creditnote_sd";
+            const sFilter = `document_no eq '${sDocumentNo}' and SLS_ORG eq '${sSalesOrg}' and document_date eq ${sDocDate} and Payer eq '${sPayer}'`;
+
             const sUrlParameters = {
                 "$count": "true",
                 "$filter": sFilter
@@ -383,18 +412,18 @@ sap.ui.define([
 
             const aAllData = [];
             let iStart = 0;
-            const iPageSize = 100; // backend default page size
+            const iPageSize = 100;
 
             const fetchPage = () => {
                 return oModel.bindList(sEntityPath, null, [], [], sUrlParameters)
                     .requestContexts(iStart, iPageSize)
                     .then(aContexts => {
                         if (aContexts.length === 0) {
-                            return false; // no more pages
+                            return false;
                         }
                         aAllData.push(...aContexts.map(ctx => ctx.getObject()));
                         iStart += iPageSize;
-                        return true; // continue fetching
+                        return true;
                     });
             };
 
@@ -415,9 +444,9 @@ sap.ui.define([
                     }
 
                     oCreditNoteDataModel.setData({ value: aAllData });
-                    console.log("Fetched debitSet data:", aAllData);
+                    console.log("Fetched creditnote_sd data:", aAllData);
 
-                    return this._loadImageAsBase64("com/crescent/app/creditnoteformfico/images/Crescent_logo_new.png")
+                    return this._loadImageAsBase64("com/crescent/app/creditnoteformsd/images/Crescent_logo_new.png")
                         .catch(error => {
                             console.warn(`Logo loading failed: ${error.message}. Using placeholder.`);
                             return null;
@@ -433,6 +462,7 @@ sap.ui.define([
                     this._busyDialog.close();
                 });
         },
+
 
         _loadImageAsBase64: function (imagePath) {
             return new Promise((resolve, reject) => {
@@ -667,7 +697,7 @@ sap.ui.define([
                                     ],
                                     border: [true, false, true, true]
                                 }
-                                
+
                             ]
                         ]
                     },
@@ -801,7 +831,7 @@ sap.ui.define([
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 20px; border: 1px solid var(--sapUiContentForegroundBorderColor); background-color: var(--sapUiGroupContentBackground); border-radius: 8px; margin: 20px;">
             <span class="sap-icon sap-icon--message-information" style="font-size: 24px; color: var(--sapUiBaseText); margin-bottom: 10px;"></span>
             <p style="font-size: 18px; font-weight: bold; color: var(--sapUiBaseText); margin: 0;">No Data Available</p>
-            <p style="font-size: 14px; color: var(--sapUiSecondaryText); margin: 5px 0 0 0;">Please Select Fiscal Year & Delivery Document No</p>
+            <p style="font-size: 14px; color: var(--sapUiSecondaryText); margin: 5px 0 0 0;">Please Select Parameters</p>
         </div>
     `;
         },

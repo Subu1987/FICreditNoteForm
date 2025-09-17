@@ -49,86 +49,45 @@
         <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema Namespace="com.sap.gateway.srvd.zfi_crdnt_srv.v0001" Alias="SAP__self">
+        <Schema Namespace="com.sap.gateway.srvd.zsd_cdnt_f4_srv_def.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="docHelpSetType">
+            <EntityType Name="f4_sd_cr_noteType">
                 <Key>
-                    <PropertyRef Name="ReferenceDocument"/>
+                    <PropertyRef Name="document_no"/>
                 </Key>
-                <Property Name="ReferenceDocument" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <NavigationProperty Name="Parameters" Type="com.sap.gateway.srvd.zfi_crdnt_srv.v0001.docHelpSetParameters" Nullable="false"/>
-            </EntityType>
-            <EntityType Name="docHelpSetParameters">
-                <Key>
-                    <PropertyRef Name="FiscalYear"/>
-                </Key>
-                <Property Name="FiscalYear" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <NavigationProperty Name="Set" Type="Collection(com.sap.gateway.srvd.zfi_crdnt_srv.v0001.docHelpSetType)" Partner="Parameters" ContainsTarget="true"/>
+                <Property Name="document_no" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="SLS_ORG" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="document_date" Type="Edm.Date"/>
+                <Property Name="Payer" Type="Edm.String" Nullable="false" MaxLength="10"/>
             </EntityType>
             <EntityContainer Name="Container">
-                <EntitySet Name="docHelpSet" EntityType="com.sap.gateway.srvd.zfi_crdnt_srv.v0001.docHelpSetParameters">
-                    <NavigationPropertyBinding Path="Set/Parameters" Target="docHelpSet"/>
-                </EntitySet>
+                <EntitySet Name="f4_sd_cr_note" EntityType="com.sap.gateway.srvd.zsd_cdnt_f4_srv_def.v0001.f4_sd_cr_noteType"/>
             </EntityContainer>
-            <Annotations Target="SAP__self.docHelpSetType/ReferenceDocument">
+            <Annotations Target="SAP__self.f4_sd_cr_noteType/document_no">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Journal Entry"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D"/>
+                <Annotation Term="SAP__common.Label" String="Billing Document"/>
+                <Annotation Term="SAP__common.Heading" String="Bill. Doc."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VBELN_VF"/>
             </Annotations>
-            <Annotations Target="SAP__self.docHelpSetType">
-                <Annotation Term="SAP__common.Label" String="F4 help for credit note"/>
+            <Annotations Target="SAP__self.f4_sd_cr_noteType/SLS_ORG">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Sales Organization"/>
+                <Annotation Term="SAP__common.Heading" String="SOrg."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VKORG"/>
             </Annotations>
-            <Annotations Target="SAP__self.docHelpSetParameters/FiscalYear">
-                <Annotation Term="SAP__common.Label" String="Fiscal Year"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Fiscal Year"/>
-                <Annotation Term="SAP__core.Computed"/>
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Heading" String="Year"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=GJAHR"/>
+            <Annotations Target="SAP__self.f4_sd_cr_noteType/Payer">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Customer"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Customer Number"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=KUNNR"/>
             </Annotations>
-            <Annotations Target="SAP__self.Container/docHelpSet">
-                <Annotation Term="SAP__capabilities.NavigationRestrictions">
-                    <Record>
-                        <PropertyValue Property="RestrictedProperties">
-                            <Collection>
-                                <Record>
-                                    <PropertyValue Property="NavigationProperty" NavigationPropertyPath="Set"/>
-                                    <PropertyValue Property="InsertRestrictions">
-                                        <Record>
-                                            <PropertyValue Property="Insertable" Bool="false"/>
-                                        </Record>
-                                    </PropertyValue>
-                                </Record>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
+            <Annotations Target="SAP__self.f4_sd_cr_noteType">
+                <Annotation Term="SAP__common.Label" String="F4 for credit Note Doc No.-SD"/>
+            </Annotations>
+            <Annotations Target="SAP__self.Container/f4_sd_cr_note">
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.FilterRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonFilterableProperties">
-                            <Collection>
-                                <PropertyPath>FiscalYear</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.SortRestrictions">
-                    <Record>
-                        <PropertyValue Property="NonSortableProperties">
-                            <Collection>
-                                <PropertyPath>FiscalYear</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
-                    </Record>
-                </Annotation>
-                <Annotation Term="SAP__capabilities.ReadRestrictions">
-                    <Record>
-                        <PropertyValue Property="Readable" Bool="false"/>
                     </Record>
                 </Annotation>
                 <Annotation Term="SAP__capabilities.InsertRestrictions">
@@ -144,11 +103,6 @@
                 <Annotation Term="SAP__capabilities.UpdateRestrictions">
                     <Record>
                         <PropertyValue Property="Updatable" Bool="false"/>
-                        <PropertyValue Property="NonUpdatableNavigationProperties">
-                            <Collection>
-                                <PropertyPath>Set</PropertyPath>
-                            </Collection>
-                        </PropertyValue>
                         <PropertyValue Property="QueryOptions">
                             <Record>
                                 <PropertyValue Property="SelectSupported" Bool="true"/>
@@ -156,9 +110,6 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-            </Annotations>
-            <Annotations Target="SAP__self.docHelpSetParameters">
-                <Annotation Term="SAP__common.ResultContext"/>
             </Annotations>
             <Annotations Target="SAP__self.Container">
                 <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
@@ -209,6 +160,10 @@
                 </Annotation>
                 <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
                 <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
+            </Annotations>
+            <Annotations Target="SAP__self.f4_sd_cr_noteType/document_date">
+                <Annotation Term="SAP__common.Label" String="Billing Date"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FKDAT"/>
             </Annotations>
         </Schema>
     </edmx:DataServices>

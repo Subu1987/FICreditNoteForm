@@ -1,13 +1,13 @@
 sap.ui.define([
     "sap/ui/core/UIComponent",
     "sap/m/MessageBox",
-    "com/crescent/app/creditnoteformfico/model/models",
+    "com/crescent/app/creditnoteformsd/model/models",
     "sap/ui/core/library",
     "sap/ui/thirdparty/jquery"
 ], function (UIComponent, MessageBox, models, coreLibrary, jQuery) {
     "use strict";
 
-    return UIComponent.extend("com.crescent.app.creditnoteformfico.Component", {
+    return UIComponent.extend("com.crescent.app.creditnoteformsd.Component", {
         metadata: {
             manifest: "json",
             interfaces: [

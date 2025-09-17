@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: com.crescent.app.creditnoteformfico
+  name: com.crescent.app.creditnoteformsd
 type: application
 builder:
   resources:
@@ -18,9 +18,9 @@ builder:
           url: https://my418443.s4hana.cloud.sap
           authenticationType: reentranceTicket # SAML support for vscode
         app:
-          name: ZFI_CREDIT_FORM
-          description: FI Credit Note Form
-          package: ZCFC_FI_CREDIT_NOTE
-          transport: NRTK903852
+          name: ZSD_CREDIT_FORM
+          description: SD Credit Note Form
+          package: ZCFC_SALES_CREDIT_NOTE
+          transport: NRTK903840
         exclude:
           - /test/

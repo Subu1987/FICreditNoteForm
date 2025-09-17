@@ -49,130 +49,257 @@
         <edmx:Include Namespace="Org.OData.Validation.V1" Alias="SAP__validation"/>
     </edmx:Reference>
     <edmx:DataServices>
-        <Schema Namespace="com.sap.gateway.srvd.zfi_credit_note_srv.v0001" Alias="SAP__self">
+        <Schema Namespace="com.sap.gateway.srvd.zsd_sales_credit_note_srv.v0001" Alias="SAP__self">
             <Annotation Term="SAP__core.SchemaVersion" String="1.0.0"/>
-            <EntityType Name="ZFI_CREDIT_NOTEType">
+            <EntityType Name="creditnote_sdType">
                 <Key>
-                    <PropertyRef Name="CompanyCode"/>
-                    <PropertyRef Name="FiscalYear"/>
-                    <PropertyRef Name="Document_No"/>
-                    <PropertyRef Name="item_No"/>
+                    <PropertyRef Name="document_no"/>
+                    <PropertyRef Name="item_no"/>
                 </Key>
-                <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="FiscalYear" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="Document_No" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="item_No" Type="Edm.String" Nullable="false" MaxLength="3"/>
-                <Property Name="Document_Date" Type="Edm.Date"/>
-                <Property Name="ref_doc" Type="Edm.String" Nullable="false" MaxLength="16"/>
-                <Property Name="ref_date" Type="Edm.Date"/>
-                <Property Name="GLAccount" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="GLAccountLongName" Type="Edm.String" Nullable="false" MaxLength="50"/>
-                <Property Name="HSN" Type="Edm.String" Nullable="false" MaxLength="16"/>
-                <Property Name="Currency" Type="Edm.String" Nullable="false" MaxLength="5"/>
-                <Property Name="Total_Price" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Cgst_Amt" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Cgst_Rate" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Sgst_Amt" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Sgst_Rate" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Igst_Amt" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Igst_Rate" Type="Edm.Decimal" Nullable="false" Precision="23" Scale="3"/>
-                <Property Name="Customer_Name" Type="Edm.String" Nullable="false" MaxLength="80"/>
-                <Property Name="Customer_Address_Line1" Type="Edm.String" Nullable="false" MaxLength="96"/>
-                <Property Name="Customer_Address_Line3" Type="Edm.String" Nullable="false" MaxLength="40"/>
-                <Property Name="Customer_Address_Line4" Type="Edm.String" Nullable="false" MaxLength="40"/>
-                <Property Name="Customer_Full_Address" Type="Edm.String" Nullable="false" MaxLength="128"/>
-                <Property Name="Customer_GST_No" Type="Edm.String" Nullable="false" MaxLength="18"/>
-                <Property Name="Customer_PAN_No" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="Place_Of_Supply_City" Type="Edm.String" Nullable="false" MaxLength="20"/>
-                <Property Name="Note_In_Header" Type="Edm.String" Nullable="false" MaxLength="50"/>
-                <Property Name="Plant_Address_Line1" Type="Edm.String" Nullable="false" MaxLength="71"/>
-                <Property Name="Plant_Address_Line2" Type="Edm.String" Nullable="false" MaxLength="67"/>
-                <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="10"/>
-                <Property Name="Plant_State_Code" Type="Edm.String" Nullable="false" MaxLength="20"/>
-                <Property Name="BusinessPlace" Type="Edm.String" Nullable="false" MaxLength="4"/>
-                <Property Name="GSTN_No" Type="Edm.String" Nullable="false" MaxLength="18"/>
-                <Property Name="PAN_No" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="document_no" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="item_no" Type="Edm.String" Nullable="false" MaxLength="6"/>
+                <Property Name="SLS_ORG" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="document_date" Type="Edm.Date"/>
+                <Property Name="Payer" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="bill_to_name" Type="Edm.String" Nullable="false" MaxLength="80"/>
+                <Property Name="bill_to_building" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="bill_to_houseno" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="bill_to_street" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="bill_to_streetname" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Property Name="bill_to_cityname" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="bill_to_dist" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="bill_to_region" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="bill_to_country" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="ship_to_name" Type="Edm.String" Nullable="false" MaxLength="80"/>
+                <Property Name="ship_to_building" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="ship_to_houseno" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="ship_to_street" Type="Edm.String" Nullable="false" MaxLength="12"/>
+                <Property Name="ship_to_streetname" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Property Name="ship_to_cityname" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="ship_to_dist" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="ship_to_region" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="ship_to_country" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="pan_no" Type="Edm.String" Nullable="false" MaxLength="20"/>
+                <Property Name="TotalNetAmount" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
+                <Property Name="TotalTaxAmount" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="variable"/>
+                <Property Name="Grand_total" Type="Edm.Decimal" Nullable="false" Precision="16" Scale="variable"/>
+                <Property Name="TransactionCurrency" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="material_code" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="description" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="hsn_sac" Type="Edm.String" Nullable="false" MaxLength="16"/>
+                <Property Name="BillingQuantityUnit" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="quantity" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Property Name="uom" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="Transaction_Currency" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="unit_price" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="2"/>
+                <Property Name="total_price" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
+                <Property Name="item_total_tax" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="variable"/>
+                <Property Name="cgst_currency" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="cgst_rate" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="9"/>
+                <Property Name="cgst_amt" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
+                <Property Name="sgst_currency" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="sgst_rate" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="9"/>
+                <Property Name="sgst_amt" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
+                <Property Name="igst_currency" Type="Edm.String" Nullable="false" MaxLength="5"/>
+                <Property Name="igst_rate" Type="Edm.Decimal" Nullable="false" Precision="24" Scale="9"/>
+                <Property Name="igst_amt" Type="Edm.Decimal" Nullable="false" Precision="15" Scale="variable"/>
             </EntityType>
             <EntityContainer Name="Container">
-                <EntitySet Name="ZFI_CREDIT_NOTE" EntityType="com.sap.gateway.srvd.zfi_credit_note_srv.v0001.ZFI_CREDIT_NOTEType"/>
+                <EntitySet Name="creditnote_sd" EntityType="com.sap.gateway.srvd.zsd_sales_credit_note_srv.v0001.creditnote_sdType"/>
             </EntityContainer>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/CompanyCode">
+            <Annotations Target="SAP__self.creditnote_sdType/document_no">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Company Code"/>
+                <Annotation Term="SAP__common.Label" String="Billing Document"/>
+                <Annotation Term="SAP__common.Heading" String="Bill. Doc."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VBELN_VF"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/FiscalYear">
+            <Annotations Target="SAP__self.creditnote_sdType/item_no">
                 <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Fiscal Year"/>
+                <Annotation Term="SAP__common.Label" String="Item"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Billing Item"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=POSNR_VF"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Document_No">
+            <Annotations Target="SAP__self.creditnote_sdType/SLS_ORG">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Journal Entry"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BELNR_D"/>
+                <Annotation Term="SAP__common.Label" String="Sales Organization"/>
+                <Annotation Term="SAP__common.Heading" String="SOrg."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VKORG"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/item_No">
-                <Annotation Term="SAP__common.IsDigitSequence"/>
-                <Annotation Term="SAP__common.Label" String="Posting View Item"/>
-                <Annotation Term="SAP__common.QuickInfo" String="Journal Entry Posting View Item"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/ref_doc">
+            <Annotations Target="SAP__self.creditnote_sdType/Payer">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Document Reference ID"/>
+                <Annotation Term="SAP__common.Label" String="Customer"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Customer Number"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=KUNNR"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/GLAccount">
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_street">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="G/L Account"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FIS_RACCT"/>
+                <Annotation Term="SAP__common.Label" String="Street Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Street Number for City/Street File"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/HSN">
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_region">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="HSN/SAC Code"/>
-                <Annotation Term="SAP__common.QuickInfo" String="HSN or SAC Code"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=J_1IG_HSN_SAC"/>
+                <Annotation Term="SAP__common.Label" String="Region"/>
+                <Annotation Term="SAP__common.Heading" String="Rg"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Region (State, Province, County)"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=REGIO"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Currency">
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_country">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Country/Region Key"/>
+                <Annotation Term="SAP__common.Heading" String="C/R"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=LAND1"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_street">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Street Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Street Number for City/Street File"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_region">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Region"/>
+                <Annotation Term="SAP__common.Heading" String="Rg"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Region (State, Province, County)"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=REGIO"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_country">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Country/Region Key"/>
+                <Annotation Term="SAP__common.Heading" String="C/R"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=LAND1"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/pan_no">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Tax number"/>
+                <Annotation Term="SAP__common.Heading" String="Tax Number"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Business Partner Tax Number"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=BPTAXNUM"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/TotalNetAmount">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="TransactionCurrency"/>
+                <Annotation Term="SAP__common.Label" String="Net Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Net Value in Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=NETWR"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/TotalTaxAmount">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="TransactionCurrency"/>
+                <Annotation Term="SAP__common.Label" String="Tax Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Tax Amount in Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=MWSBP"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/Grand_total">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="TransactionCurrency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/TransactionCurrency">
                 <Annotation Term="SAP__common.IsCurrency"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Transaction Currency"/>
+                <Annotation Term="SAP__common.Label" String="Document Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="SD Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERK"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Total_Price">
-                <Annotation Term="SAP__measures.ISOCurrency" Path="Currency"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Cgst_Amt">
-                <Annotation Term="SAP__measures.ISOCurrency" Path="Currency"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Sgst_Amt">
-                <Annotation Term="SAP__measures.ISOCurrency" Path="Currency"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Igst_Amt">
-                <Annotation Term="SAP__measures.ISOCurrency" Path="Currency"/>
-            </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Customer_GST_No">
+            <Annotations Target="SAP__self.creditnote_sdType/material_code">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Tax Number 3"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=STCD3"/>
+                <Annotation Term="SAP__common.Label" String="Material"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Material Number"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=MATNR"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/BusinessPlace">
+            <Annotations Target="SAP__self.creditnote_sdType/hsn_sac">
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Business Place"/>
-                <Annotation Term="SAP__common.Heading" String="BusP"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_BUPLA"/>
+                <Annotation Term="SAP__common.Label" String="Control Code"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Control code for consumption taxes in foreign trade"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/GSTN_No">
+            <Annotations Target="SAP__self.creditnote_sdType/BillingQuantityUnit">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="Sales Unit"/>
+                <Annotation Term="SAP__common.Heading" String="SU"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VRKME"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/quantity">
+                <Annotation Term="SAP__measures.Unit" Path="BillingQuantityUnit"/>
+                <Annotation Term="SAP__common.Label" String="Invoiced Quantity"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Actual Invoiced Quantity"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FKIMG"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/uom">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="Sales Unit"/>
+                <Annotation Term="SAP__common.Heading" String="SU"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VRKME"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/Transaction_Currency">
+                <Annotation Term="SAP__common.IsCurrency"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
-                <Annotation Term="SAP__common.Label" String="Tax Number 3"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=J_1IGSTCD3"/>
+                <Annotation Term="SAP__common.Label" String="Document Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="SD Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERK"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType">
-                <Annotation Term="SAP__common.Label" String="FI Credit note"/>
+            <Annotations Target="SAP__self.creditnote_sdType/unit_price">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="Transaction_Currency"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/total_price">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="Transaction_Currency"/>
+                <Annotation Term="SAP__common.Label" String="Net Value"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Net Value of Billing item in Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=NETWR_FP"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/item_total_tax">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="Transaction_Currency"/>
+                <Annotation Term="SAP__common.Label" String="Tax Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Tax Amount in Document Currency"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=MWSBP"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/cgst_currency">
+                <Annotation Term="SAP__common.IsCurrency"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Currency Key"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERS"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/cgst_amt">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="cgst_currency"/>
+                <Annotation Term="SAP__common.Label" String="Condition Value"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_VALUE"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/sgst_currency">
+                <Annotation Term="SAP__common.IsCurrency"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Currency Key"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERS"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/sgst_amt">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="sgst_currency"/>
+                <Annotation Term="SAP__common.Label" String="Condition Value"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_VALUE"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/igst_currency">
+                <Annotation Term="SAP__common.IsCurrency"/>
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Currency"/>
+                <Annotation Term="SAP__common.Heading" String="Crcy"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Currency Key"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=WAERS"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/igst_amt">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="igst_currency"/>
+                <Annotation Term="SAP__common.Label" String="Condition Value"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_VALUE"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType">
+                <Annotation Term="SAP__common.Label" String="Sales Credit Note"/>
                 <Annotation Term="SAP__UI.SelectionFields">
                     <Collection>
-                        <PropertyPath>CompanyCode</PropertyPath>
-                        <PropertyPath>FiscalYear</PropertyPath>
-                        <PropertyPath>Document_No</PropertyPath>
+                        <PropertyPath>document_no</PropertyPath>
+                        <PropertyPath>SLS_ORG</PropertyPath>
+                        <PropertyPath>document_date</PropertyPath>
+                        <PropertyPath>Payer</PropertyPath>
                     </Collection>
                 </Annotation>
             </Annotations>
-            <Annotations Target="SAP__self.Container/ZFI_CREDIT_NOTE">
+            <Annotations Target="SAP__self.Container/creditnote_sd">
                 <Annotation Term="SAP__capabilities.SearchRestrictions">
                     <Record>
                         <PropertyValue Property="Searchable" Bool="false"/>
@@ -198,12 +325,62 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+                <Annotation Term="SAP__capabilities.FilterRestrictions">
+                    <Record>
+                        <PropertyValue Property="FilterExpressionRestrictions">
+                            <Collection>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="TotalNetAmount"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="TotalTaxAmount"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="Grand_total"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="quantity"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="total_price"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="item_total_tax"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="cgst_amt"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="sgst_amt"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                                <Record>
+                                    <PropertyValue Property="Property" PropertyPath="igst_amt"/>
+                                    <PropertyValue Property="AllowedExpressions" String="MultiValue"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
             </Annotations>
             <Annotations Target="SAP__self.Container">
                 <Annotation Term="SAP__CodeList.CurrencyCodes">
                     <Record>
                         <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
                         <PropertyValue Property="CollectionPath" String="Currencies"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="SAP__CodeList.UnitsOfMeasure">
+                    <Record>
+                        <PropertyValue Property="Url" String="../../../../default/iwbep/common/0001/$metadata"/>
+                        <PropertyValue Property="CollectionPath" String="UnitsOfMeasure"/>
                     </Record>
                 </Annotation>
                 <Annotation Term="SAP__common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
@@ -255,36 +432,85 @@
                 <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
                 <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Document_Date">
-                <Annotation Term="SAP__common.Label" String="Posting Date"/>
+            <Annotations Target="SAP__self.creditnote_sdType/document_date">
+                <Annotation Term="SAP__common.Label" String="Billing Date"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FKDAT"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/ref_date">
-                <Annotation Term="SAP__common.Label" String="Journal Entry Date"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_name">
+                <Annotation Term="SAP__common.Label" String="Full Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Full Name of Person"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_NAMTEXT"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/GLAccountLongName">
-                <Annotation Term="SAP__common.Label" String="G/L Account Long Name"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_building">
+                <Annotation Term="SAP__common.Label" String="Building Code"/>
+                <Annotation Term="SAP__common.Heading" String="Building"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Building (Number or Code)"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_BLDNG"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Customer_Name">
-                <Annotation Term="SAP__common.Label" String="Name of Customer"/>
-                <Annotation Term="SAP__common.Heading" String="Customer"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_houseno">
+                <Annotation Term="SAP__common.Label" String="House Number"/>
+                <Annotation Term="SAP__common.Heading" String="House No."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_HSNM1"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Customer_Address_Line3">
-                <Annotation Term="SAP__common.Label" String="Street 4"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_STRSPP3"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_streetname">
+                <Annotation Term="SAP__common.Label" String="Street"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_STREET"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Customer_Address_Line4">
-                <Annotation Term="SAP__common.Label" String="Street 5"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_LCTN"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_cityname">
+                <Annotation Term="SAP__common.Label" String="City"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_CITY1"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Place_Of_Supply_City">
-                <Annotation Term="SAP__common.Label" String="Description"/>
+            <Annotations Target="SAP__self.creditnote_sdType/bill_to_dist">
+                <Annotation Term="SAP__common.Label" String="District"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_CITY2"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Note_In_Header">
-                <Annotation Term="SAP__common.Label" String="Item Text"/>
-                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=FARP_SGTXT"/>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_name">
+                <Annotation Term="SAP__common.Label" String="Full Name"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Full Name of Person"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_NAMTEXT"/>
             </Annotations>
-            <Annotations Target="SAP__self.ZFI_CREDIT_NOTEType/Plant_State_Code">
-                <Annotation Term="SAP__common.Label" String="Description"/>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_building">
+                <Annotation Term="SAP__common.Label" String="Building Code"/>
+                <Annotation Term="SAP__common.Heading" String="Building"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Building (Number or Code)"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_BLDNG"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_houseno">
+                <Annotation Term="SAP__common.Label" String="House Number"/>
+                <Annotation Term="SAP__common.Heading" String="House No."/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_HSNM1"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_streetname">
+                <Annotation Term="SAP__common.Label" String="Street"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_STREET"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_cityname">
+                <Annotation Term="SAP__common.Label" String="City"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_CITY1"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/ship_to_dist">
+                <Annotation Term="SAP__common.Label" String="District"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=AD_CITY2"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/description">
+                <Annotation Term="SAP__common.Label" String="Item Description"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Short Text for Sales Order Item"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=ARKTX"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/cgst_rate">
+                <Annotation Term="SAP__common.Label" String="Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Condition Amount or Percentage"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_AMOUNT"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/sgst_rate">
+                <Annotation Term="SAP__common.Label" String="Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Condition Amount or Percentage"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_AMOUNT"/>
+            </Annotations>
+            <Annotations Target="SAP__self.creditnote_sdType/igst_rate">
+                <Annotation Term="SAP__common.Label" String="Amount"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Condition Amount or Percentage"/>
+                <Annotation Term="SAP__common.DocumentationRef" String="urn:sap-com:documentation:key?=type=DE&amp;id=VFPRC_ELEMENT_AMOUNT"/>
             </Annotations>
         </Schema>
     </edmx:DataServices>

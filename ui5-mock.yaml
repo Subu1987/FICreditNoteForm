@@ -2,7 +2,7 @@
 
 specVersion: "3.1"
 metadata:
-  name: com.crescent.app.creditnoteformfico
+  name: com.crescent.app.creditnoteformsd
 type: application
 server:
   customMiddleware:
@@ -23,11 +23,11 @@ server:
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zfi_credit_note_srv_bind/srvd/sap/zfi_credit_note_srv/0001/
+            path: /sap/opu/odata4/sap/zsd_sales_credit_note_srv_bind/srvd/sap/zsd_sales_credit_note_srv/0001/
           - url: https://my418443-api.s4hana.cloud.sap
             authenticationType: SAMLAssertion
             destination: BAS_Crescent_Dev
-            path: /sap/opu/odata4/sap/zfi_crdnt_srv_bind/srvd/sap/zfi_crdnt_srv/0001/
+            path: /sap/opu/odata4/sap/zsd_cdnt_f4_srv_bin/srvd/sap/zsd_cdnt_f4_srv_def/0001/
     - name: fiori-tools-appreload
       afterMiddleware: compression
       configuration:
@@ -44,12 +44,12 @@ server:
       configuration:
         mountPath: /
         services:
-          - urlPath: /sap/opu/odata4/sap/zfi_credit_note_srv_bind/srvd/sap/zfi_credit_note_srv/0001
+          - urlPath: /sap/opu/odata4/sap/zsd_sales_credit_note_srv_bind/srvd/sap/zsd_sales_credit_note_srv/0001
             metadataPath: ./webapp/localService/mainService/metadata.xml
             mockdataPath: ./webapp/localService/mainService/data
             generateMockData: true
-          - urlPath: /sap/opu/odata4/sap/zfi_crdnt_srv_bind/srvd/sap/zfi_crdnt_srv/0001
-            metadataPath: ./webapp/localService/zfi_crdnt_srv/metadata.xml
-            mockdataPath: ./webapp/localService/zfi_crdnt_srv/data
+          - urlPath: /sap/opu/odata4/sap/zsd_cdnt_f4_srv_bin/srvd/sap/zsd_cdnt_f4_srv_def/0001
+            metadataPath: ./webapp/localService/zsd_cdnt_f4_srv_def/metadata.xml
+            mockdataPath: ./webapp/localService/zsd_cdnt_f4_srv_def/data
             generateMockData: true
         annotations: []

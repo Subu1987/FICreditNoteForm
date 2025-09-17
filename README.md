@@ -8,7 +8,7 @@
 |**Template Used**<br>Basic V4|
 |**Service Type**<br>SAP System (ABAP On-Premise)|
 |**Service URL**<br>https://my418443.s4hana.cloud.sap/sap/opu/odata4/sap/zcredit_debit_note_bind/srvd/sap/zcredit_debit_note_form_srv/0001/|
-|**Module Name**<br>creditnoteformfico|
+|**Module Name**<br>creditnoteformsd|
 |**Application Title**<br>Credit Note Form|
 |**Namespace**<br>com.crescent.app|
 |**UI5 Theme**<br>sap_horizon|
