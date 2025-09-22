@@ -8,19 +8,10 @@ sap.ui.define([
     "use strict";
 
     return Controller.extend("com.crescent.app.creditnoteformsd.controller.debitnoteform", {
+        
         onInit: function () {
+
             this._busyDialog = new sap.m.BusyDialog();
-            // Store references to input controls
-            // this._oDocumentNoInput = this.getView().byId("idDeliveryDocumentInput");
-            // this._oFiscalYearInput = this.getView().byId("idFiscalYearInput");
-
-            // if (!this._oDocumentNoInput) {
-            //     console.error("Delivery Document Input control not found during initialization!");
-            // }
-            // if (!this._oFiscalYearInput) {
-            //     console.error("Fiscal Year Input control not found during initialization!");
-            // }
-
             this.onFetchDocOData();
 
             const oPdfContainer = this.byId("pdfIframeContainer");
@@ -75,227 +66,6 @@ sap.ui.define([
             }
 
             return bValid;
-        },
-        onOpenFiscalYearDialog: function (oEvent) {
-            var oFiscalYearInput = this._oFiscalYearInput;
-            if (oFiscalYearInput && oFiscalYearInput.getValue() === "" && oEvent.getParameter("value") === "") {
-                return;
-            }
-
-            this.idFiscalYearInput = oEvent.getSource().getId();
-            if (!this.oOpenDialogFiscalYear) {
-                Fragment.load({
-                    id: this.getView().getId(),
-                    name: "com.crescent.app.creditnoteformsd.view.fragments.DialogFiscalYear",
-                    controller: this
-                }).then(oDialog => {
-                    this.oOpenDialogFiscalYear = oDialog;
-                    this.getView().addDependent(oDialog);
-                    this.oOpenDialogFiscalYear.open();
-                }).catch(error => {
-                    console.error("Fiscal Year Dialog load failed:", error);
-                    MessageBox.error(`Failed to load Fiscal Year dialog: ${error.message}`);
-                });
-            } else {
-                this.oOpenDialogFiscalYear.open();
-            }
-        },
-
-        onOpenDeliveryDocumentDialog: function (oEvent) {
-            var oDocumentNoInput = this._oDocumentNoInput;
-            if (oDocumentNoInput && oDocumentNoInput.getValue() === "" && oEvent.getParameter("value") === "") {
-                return;
-            }
-
-            const sViewId = this.getView().getId();
-            console.log("Opening Document No dialog with view ID:", sViewId);
-
-            this.idDeliveryDocumentInput = oEvent.getSource().getId();
-            if (!this.oOpenDialogDocumentNo) {
-                Fragment.load({
-                    id: sViewId,
-                    name: "com.crescent.app.creditnoteformsd.view.fragments.DialogDocumentNo",
-                    controller: this
-                }).then(oDialog => {
-                    console.log("Document No Dialog loaded:", oDialog);
-                    this.oOpenDialogDocumentNo = oDialog;
-                    this.getView().addDependent(oDialog);
-                    // Fetch data and wait before opening
-                    this.onFetchDocOData().then(() => {
-                        this.oOpenDialogDocumentNo.open();
-                        console.log("Dialog opened, list ID:", Fragment.byId(sViewId, "idDocumentNoList"));
-                    }).catch(error => {
-                        MessageBox.error(`Failed to fetch document data: ${error.message}`);
-                    });
-                }).catch(error => {
-                    console.error("Document No Dialog load failed:", error);
-                    MessageBox.error(`Failed to load Document No dialog: ${error.message}`);
-                });
-            } else {
-                // Fetch data and wait before re-opening
-                this.onFetchDocOData().then(() => {
-                    this.oOpenDialogDocumentNo.open();
-                    console.log("Dialog re-opened, list ID:", Fragment.byId(sViewId, "idDocumentNoList"));
-                }).catch(error => {
-                    MessageBox.error(`Failed to fetch document data: ${error.message}`);
-                });
-            }
-        },
-
-        _handleFiscalYearConfirm: function (oEvent) {
-            var oDocumentNoInput = this._oDocumentNoInput;
-            var oFiscalYearInput = this._oFiscalYearInput;
-            var oSelectedItem = oEvent.getParameter("selectedItem");
-            var sSelectedYear = oSelectedItem ? oSelectedItem.getTitle() : null;
-
-            if (!oDocumentNoInput) {
-                console.error("Delivery Document Input control not found!");
-                return;
-            }
-
-            if (sSelectedYear && oFiscalYearInput) {
-                oFiscalYearInput.setValue(sSelectedYear);
-                oFiscalYearInput.setValueState("None");
-                oDocumentNoInput.setEnabled(true);
-
-                var oGlobalDataModel = this.getOwnerComponent().getModel("globalData");
-                if (oGlobalDataModel) {
-                    oGlobalDataModel.setProperty("/FiscalYear", sSelectedYear);
-                }
-
-                this.onFetchDocOData();
-            }
-
-            oEvent.getSource().getItems().forEach(function (oItem) {
-                oItem.setVisible(true);
-            });
-        },
-
-        onSearchDocumentNo: function (oEvent) {
-            const sQuery = oEvent.getParameter("newValue") || "";
-            const sViewId = this.getView().getId();
-            console.log("onSearchDocumentNo triggered with query:", sQuery, "View ID:", sViewId);
-
-            // Guard: Ensure dialog is open
-            if (!this.oOpenDialogDocumentNo || !this.oOpenDialogDocumentNo.isOpen()) {
-                console.warn("Document No dialog not open, ignoring search.");
-                return;
-            }
-
-            const oList = Fragment.byId(sViewId, "idDocumentNoList");
-            console.log("List control:", oList, "Expected ID:", sViewId + "--idDocumentNoList");
-
-            if (!oList) {
-                console.error("List control 'idDocumentNoList' not found for view ID:", sViewId);
-                MessageBox.error("Document list not found. Please ensure the dialog is loaded.");
-                return;
-            }
-
-            const oBinding = oList.getBinding("items");
-
-            if (!oBinding) {
-                console.error("Items binding not found for idDocumentNoList. Binding info:", oList.getBindingInfo("items"));
-                MessageBox.error("List binding not initialized. Please ensure data is loaded.");
-                return;
-            }
-
-            if (sQuery) {
-                const oFilter = new Filter({
-                    path: "ReferenceDocument",
-                    operator: FilterOperator.Contains,
-                    value1: sQuery,
-                    caseSensitive: false
-                });
-                oBinding.filter([oFilter]);
-            } else {
-                oBinding.filter([]);
-            }
-        },
-
-        onSelectionChangeDocumentNo: function (oEvent) {
-            const oList = oEvent.getSource();
-            const oGlobalModel = this.getOwnerComponent().getModel("globalData");
-            const aSelectedDocumentNos = [];
-
-            const aSelectedItems = oList.getSelectedItems();
-            aSelectedItems.forEach(oItem => {
-                const oContext = oItem.getBindingContext("documentNoData");
-                const sDocumentNo = oContext.getProperty("ReferenceDocument");
-                aSelectedDocumentNos.push(sDocumentNo);
-            });
-
-            oGlobalModel.setProperty("/selectedDocumentNos", aSelectedDocumentNos);
-            oGlobalModel.setProperty("/selectedDocumentNosDisplay", aSelectedDocumentNos.join(", "));
-        },
-
-        onConfirmDocumentNo: function () {
-            const oGlobalModel = this.getOwnerComponent().getModel("globalData");
-            const aSelectedDocumentNos = oGlobalModel.getProperty("/selectedDocumentNos") || [];
-            const sSelectedDocumentNosDisplay = oGlobalModel.getProperty("/selectedDocumentNosDisplay") || "";
-
-            console.log("Confirmed Document Numbers:", aSelectedDocumentNos);
-            console.log("Display Text:", sSelectedDocumentNosDisplay);
-
-            oGlobalModel.refresh(true);
-            this._resetDocumentNoDialog();
-            this.oOpenDialogDocumentNo.close();
-
-            // Trigger onFetchOData for selected document numbers
-            // this.onFetchOData();
-        },
-
-        onCloseDocumentNo: function () {
-            const oGlobalModel = this.getOwnerComponent().getModel("globalData");
-
-            oGlobalModel.setProperty("/selectedDocumentNos", []);
-            oGlobalModel.setProperty("/selectedDocumentNosDisplay", "");
-
-            this._resetDocumentNoDialog();
-            this.oOpenDialogDocumentNo.close();
-        },
-
-        _resetDocumentNoDialog: function () {
-            const sViewId = this.getView().getId();
-            const oList = Fragment.byId(sViewId, "idDocumentNoList");
-            const oSearchField = Fragment.byId(sViewId, "idDocumentNoSearchField");
-
-            if (oSearchField) {
-                oSearchField.setValue("");
-                this.onSearchDocumentNo({ getParameter: () => "" });
-            }
-
-            if (oList) {
-                oList.getItems().forEach(oItem => oItem.setSelected(false));
-            }
-        },
-
-        _handleFiscalYearCancel: function (oEvent) {
-            var oDocumentNoInput = this._oDocumentNoInput;
-            var oFiscalYearInput = this._oFiscalYearInput;
-
-            if (!oDocumentNoInput) {
-                console.error("Delivery Document Input control not found!");
-                return;
-            }
-
-            if (oFiscalYearInput) {
-                oFiscalYearInput.setValue("");
-                oFiscalYearInput.setValueState("None");
-                oDocumentNoInput.setEnabled(false);
-            }
-
-            oEvent.getSource().getItems().forEach(function (oItem) {
-                oItem.setVisible(true);
-            });
-        },
-
-        onFiscalYearClear: function (oEvent) {
-            var oDocumentNoInput = this._oDocumentNoInput;
-            var oFiscalYearInput = this._oFiscalYearInput;
-
-            if (oFiscalYearInput && oFiscalYearInput.getValue() === "") {
-                oDocumentNoInput.setEnabled(false);
-            }
         },
 
         onFetchDocOData: function () {
@@ -373,7 +143,6 @@ sap.ui.define([
                     });
             });
         },
-
 
         onFetchOData: function () {
             if (!this._validateInputs()) {
@@ -462,7 +231,6 @@ sap.ui.define([
                     this._busyDialog.close();
                 });
         },
-
 
         _loadImageAsBase64: function (imagePath) {
             return new Promise((resolve, reject) => {
@@ -576,26 +344,26 @@ sap.ui.define([
             };
 
             var items = data.value.map(item => ({
-                materialCode: item.Material_Code || ' ',
-                description: item.Material_Description
-                    ? item.Material_Description
+                materialCode: item.material_code || ' ',
+                description: item.description
+                    ? item.description
                     : (item.GLAccountLongName || ' '),
-                hsn: item.HSN || ' ',
-                quantity: this._formatNumber(item.Quantity, 3),
+                hsn: item.hsn_sac || ' ',
+                quantity: this._formatNumber(item.quantity, 3),
                 uom: item.UOM || ' ',
-                unitPrice: this._formatNumber(item.Unit_Price, 2),
-                totalPrice: this._formatNumber(item.Total_Price, 2),
-                currency: item.Currency || 'INR',
-                cgstRate: item.Cgst_Rate ? `${this._formatNumber(item.Cgst_Rate, 2)}%` : '0.00%',
-                cgstAmt: this._formatNumber(item.Cgst_Amt, 2),
-                sgstRate: item.Sgst_Rate ? `${this._formatNumber(item.Sgst_Rate, 2)}%` : '0.00%',
-                sgstAmt: this._formatNumber(item.Sgst_Amt, 2),
-                igstRate: item.Igst_Rate ? `${this._formatNumber(item.Igst_Rate, 2)}%` : '0.00%',
-                igstAmt: this._formatNumber(item.Igst_Amt, 2)
+                unitPrice: this._formatNumber(item.unit_price, 2),
+                totalPrice: this._formatNumber(item.total_price, 2),
+                currency: item.TransactionCurrency || 'INR',
+                cgstRate: item.cgst_rate ? `${this._formatNumber(item.cgst_rate, 2)}%` : '0.00%',
+                cgstAmt: this._formatNumber(item.cgst_amt, 2),
+                sgstRate: item.sgst_rate ? `${this._formatNumber(item.sgst_rate, 2)}%` : '0.00%',
+                sgstAmt: this._formatNumber(item.sgst_amt, 2),
+                igstRate: item.igst_rate ? `${this._formatNumber(item.igst_rate, 2)}%` : '0.00%',
+                igstAmt: this._formatNumber(item.igst_amt, 2)
             }));
 
             // ✅ Skip first record if Document_No starts with "16"
-            if (data.value[0]?.Document_No?.startsWith("16")) {
+            if (data.value[0]?.document_no?.startsWith("16")) {
                 items = items.slice(1);
             }
 
@@ -632,7 +400,7 @@ sap.ui.define([
                                         { text: firstRecord.Plant_Address_Line2 || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: 'CIN NO: U29100WB1982PTCO35426', style: 'tableBody', alignment: 'left', margin: [2, 4, 2, 0] },
                                         { text: `GSTNO: ${firstRecord.GSTN_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `PAN NO: ${firstRecord.PAN_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: `PAN NO: ${firstRecord.pan_no || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `STATE CODE: ${firstRecord.Plant_State_Code || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
                                     ],
                                     border: [true, true, true, true]
@@ -644,8 +412,8 @@ sap.ui.define([
                                         { text: `Website: admin@crescentfoundry.in`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: '4th FLOOR, SUIT NO 406, LORDS BUILDING, 7/1 LORD SINHA ROAD', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: 'Kolkata 700071, WB', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: `Document No: ${firstRecord.Document_No || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 15, 2, 0] },
-                                        { text: `Document Date: ${this._formatDate(firstRecord.Document_Date) || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
+                                        { text: `Document No: ${firstRecord.document_no || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 15, 2, 0] },
+                                        { text: `Document Date: ${this._formatDate(firstRecord.document_date) || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
                                         { text: `Ref. No: ${firstRecord.ref_doc || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] },
                                         { text: `Ref. Date: ${this._formatDate(firstRecord.ref_date) || ''}`, style: 'tableBody', alignment: 'left', bold: true, margin: [2, 0, 2, 0] }
                                     ],
@@ -668,10 +436,10 @@ sap.ui.define([
                                 {
                                     stack: [
                                         { text: 'Bill To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Customer_Name || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line1 || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line3 || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.bill_to_name || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.bill_to_houseno || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.bill_to_building || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.bill_to_streetname || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `GST No: ${firstRecord.Customer_GST_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `PAN No: ${firstRecord.Customer_PAN_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
@@ -681,10 +449,10 @@ sap.ui.define([
                                 {
                                     stack: [
                                         { text: 'Ship To', style: 'subHeader', alignment: 'left', margin: [2, 2, 2, 2] },
-                                        { text: firstRecord.Customer_Name || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line1 || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line3 || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
-                                        { text: firstRecord.Customer_Address_Line4 || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.ship_to_name || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.ship_to_building || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.ship_to_houseno || '', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
+                                        { text: firstRecord.ship_to_streetname || ' ', style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `GST No: ${firstRecord.Customer_GST_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `PAN No: ${firstRecord.Customer_PAN_No || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] },
                                         { text: `Place of Supply: ${firstRecord.Place_Of_Supply_City || ''}`, style: 'tableBody', alignment: 'left', margin: [2, 0, 2, 0] }
